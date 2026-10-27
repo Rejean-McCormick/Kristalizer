@@ -1,0 +1,27 @@
+{
+  "product": "Kristalizer",
+  "version": "1.1.0",
+  "source": "Bridge_Kristal_Universel_1.0.zip",
+  "scope": "rebranding and repository restructuring without semantic-enrichment claims",
+  "tests": {
+    "synthetic_unittest": "9 passed",
+    "gui_tkinter_xvfb": "opened; title Kristalizer 1.1",
+    "Kristal-Earth_offline_scan": "12 candidates; 0 migrations required",
+    "Kristal-Earth_stage": "copied source; no new approvals",
+    "Kristal-Earth_kit_build": "passed",
+    "Kristal-Earth_publish_and_activate": "passed on staging copy"
+  },
+  "not_tested": [
+    "Windows launch on user machine",
+    "real D: EncyK SQLite index",
+    "Framework draft.4 qualification",
+    "bulk KA/KS domain enrichment"
+  ],
+  "safe_guards": [
+    "EncyK read only",
+    "workspaces originals unchanged",
+    "no automatic exactMatch from labels",
+    "legacy decisions import available"
+  ],
+  "future_work": "Kristal v11.1 semantic enrichment: domain KA/KS from detailed Wikidata statements"
+}

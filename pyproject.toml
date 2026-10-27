@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=65"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kristalizer"
+version = "1.1.0"
+description = "Kristal analysis, Wikidata reconciliation, canonical staging, build and activation"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+kristalizer = "kristalizer.cli:main"
+
+[tool.setuptools]
+packages = ["kristalizer"]

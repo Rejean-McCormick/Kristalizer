@@ -1,0 +1,17 @@
+# Kristalizer outputs, private local paths and environments
+SORTIE/
+STAGING/
+ANALYSE/
+*.log
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.pytest_cache/
+kristalizer-config.json
+bridge-config.json
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+.DS_Store
+Thumbs.db

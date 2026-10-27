@@ -1,0 +1,1 @@
+Kristalizer helps enrich and standardize Kristal knowledge projects using local EncyKlopedia/Wikidata data. It discovers and reviews identity mappings, preserves source content, stages canonical updates, and validates, builds, publishes, and activates projects through the Authoring Kit. Supports one Kristal or many.
