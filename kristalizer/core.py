@@ -7,6 +7,7 @@ Python standard library only.
 from __future__ import annotations
 import csv, hashlib, json, re, shutil, sqlite3, subprocess, sys, unicodedata
 from collections import Counter, defaultdict
+from .topic_index import build_topic_index
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -217,7 +218,8 @@ def topic_wikidata_risk(human_label, remote_label, description):
         'album de','music album','song by','chanson de','peinture de','painting by',
         'television series','serie televisee','tv series','novel by','roman de',
         'bande dessinee','comic strip','strip de','brevet','us patent',
-        'published in','publication scientifique','single by', 'chanson d',
+        'published in','publication scientifique','scientific article','journal article',
+        'research article','book by','livre de','us patent','single by', 'chanson d',
         'album d', 'rock band', 'groupe musical', 'bande de rock',
     )
     # Require complete phrase matching for short terms such as 'album'.
@@ -384,10 +386,16 @@ def scan(source,output,index=None,max_lookups=8):
               ['project','topic','label_search','source_file','claims_count','example_claim','existing_kq','identity_status','note'])
     write_csv(out/'SUGGESTIONS_NOTIONS_WIKIDATA.csv',suggestions,
               ['project','topic','label_search','source_file','wikidata_id','wikidata_label','wikidata_description','risk','status','note'])
-    stats={'format':'kristal.kristalizer.scan/1.2.1','generated_at':datetime.now(timezone.utc).isoformat(),
+    links,topic_review,missing=build_topic_index(projects,load,topics,suggestions)
+    write_csv(out/'LIAISONS_NOTIONS_ASSERTIONS.csv',links,
+              ['project','topic','source_file','claim_id','original_subject','existing_kq','existing_ka','evidence_refs','status'])
+    write_csv(out/'REVUE_IDENTITES_NOTIONS.csv',topic_review,
+              ['project','topic','claims_count','source_file','wikidata_candidates','candidates_to_review','qid_to_review','status','note'])
+    stats={'format':'kristal.kristalizer.scan/1.2.2','generated_at':datetime.now(timezone.utc).isoformat(),
            'projects':len(projects),'candidates':len(allrows),'historical_candidates_excluded':len(newly_excluded),
            'decisions_archived':len(retired),'existing_decisions_preserved':sum(k in previous for k in current),
            'domain_topics':len(topics),'topic_wikidata_suggestions':len(suggestions),
+           'native_claim_links':len(links)-len(missing),'unresolved_claim_links':len(missing),
            'indexed':index_state,'projects_detail':reports,'migration_required':sum(r['state']=='MIGRATION_V11_REQUISE' for r in reports),
            'notice':'Les notions documentaires ne sont pas des KQ. Aucun exactMatch, KS ni KA n’est approuvé par le scan.'}
     dump(out/'RAPPORT.json',stats)

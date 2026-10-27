@@ -1,4 +1,4 @@
-## 1.2.1
+## 1.2.2
 
 - Force UTF-8 in the GUI subprocess and Windows launchers, fixing mojibake in French console output.
 - Retains all Wikidata topic suggestions but flags clearly unrelated named works for review.

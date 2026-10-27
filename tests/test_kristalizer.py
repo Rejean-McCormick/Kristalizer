@@ -108,7 +108,7 @@ class KristalizerTests(unittest.TestCase):
 
     def test_cli_and_new_module(self):
         import kristalizer
-        self.assertEqual(kristalizer.__version__, '1.2.1')
+        self.assertEqual(kristalizer.__version__, '1.2.2')
 
     def test_bulk_metadata_is_not_domain_entity(self):
         # Source of the historical false positives: a *metadata code* called

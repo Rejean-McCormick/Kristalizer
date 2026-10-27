@@ -41,6 +41,7 @@ def main():
             print('Index EncyK utilisé:', obj['indexed']['connected'])
             print('Notions de domaine:',obj['domain_topics'],'; propositions Wikidata de notion:',obj['topic_wikidata_suggestions'])
             print('Anciens candidats exclus du registre actif:',obj['historical_candidates_excluded'],'; décisions archivées:',obj['decisions_archived'])
+            print('Liens vers KQ/KA natifs :',obj['native_claim_links'],'; à résoudre :',obj['unresolved_claim_links'])
         elif args.action=='stage':
             obj=stage(args.source,args.output)
             print('[OK] Copies préparées dans',obj['staging'],'\n',json.dumps(obj['projects'],ensure_ascii=False))
