@@ -1,27 +1,22 @@
 {
   "product": "Kristalizer",
-  "version": "1.1.0",
-  "source": "Bridge_Kristal_Universel_1.0.zip",
-  "scope": "rebranding and repository restructuring without semantic-enrichment claims",
+  "version": "1.2.1",
   "tests": {
-    "synthetic_unittest": "9 passed",
-    "gui_tkinter_xvfb": "opened; title Kristalizer 1.1",
-    "Kristal-Earth_offline_scan": "12 candidates; 0 migrations required",
-    "Kristal-Earth_stage": "copied source; no new approvals",
-    "Kristal-Earth_kit_build": "passed",
-    "Kristal-Earth_publish_and_activate": "passed on staging copy"
+    "unit_tests": "14 passed",
+    "simulated_windows_cp1252_pipe": "passed UTF-8 round-trip",
+    "real_four_kristals_offline_scan": "4 projects; 94 domain topics; 0 migrations; no local index",
+    "user_enck_scan_result_reprocessed": "156 topic suggestions classified from uploaded CSV",
+    "source_changes": "only CLI/GUI/console and topic risk heuristics; original Kristals untouched"
   },
   "not_tested": [
-    "Windows launch on user machine",
-    "real D: EncyK SQLite index",
-    "Framework draft.4 qualification",
-    "bulk KA/KS domain enrichment"
+    "Windows GUI display in user environment",
+    "query live D: EncyK SQLite from sandbox",
+    "final build or activate of four Kristals"
   ],
-  "safe_guards": [
-    "EncyK read only",
-    "workspaces originals unchanged",
-    "no automatic exactMatch from labels",
-    "legacy decisions import available"
-  ],
-  "future_work": "Kristal v11.1 semantic enrichment: domain KA/KS from detailed Wikidata statements"
+  "safety": [
+    "No KQ-QID approvals",
+    "No canonical KA or KS",
+    "No proposals removed",
+    "Keep existing SORTIE"
+  ]
 }

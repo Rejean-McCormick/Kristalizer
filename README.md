@@ -1,3 +1,7 @@
+> **Mise à jour 1.2.1 :** correction des accents dans le journal Windows et signalement des homonymies évidentes dans les suggestions Wikidata. Voir [`LIRE_MOI_V121.md`](LIRE_MOI_V121.md).
+
+> **Nouveau en 1.2 :** le scan distingue métadonnées migrées, référents d'assertion et notions de domaine. Consulter `LIRE_MOI_V12.md` avant d'approuver des correspondances Wikidata.
+
 # Kristalizer
 
 **Kristal analysis, Wikidata identity reconciliation, and canonical build workflow.**

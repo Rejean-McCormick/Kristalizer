@@ -1,8 +1,8 @@
 """Tests offline, sans EncyK réel ni Kristal existant."""
-import csv, hashlib, json, sqlite3, sys, tempfile, unittest
+import csv, hashlib, json, sqlite3, sys, tempfile, unittest, subprocess, os
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from kristalizer.core import scan, stage, discover, load, read_csv, EncyIndex, import_legacy_decisions
+from kristalizer.core import scan, stage, discover, load, read_csv, EncyIndex, import_legacy_decisions, topic_wikidata_risk
 
 
 def write(path,obj):
@@ -108,7 +108,61 @@ class KristalizerTests(unittest.TestCase):
 
     def test_cli_and_new_module(self):
         import kristalizer
-        self.assertEqual(kristalizer.__version__, '1.1.0')
+        self.assertEqual(kristalizer.__version__, '1.2.1')
+
+    def test_bulk_metadata_is_not_domain_entity(self):
+        # Source of the historical false positives: a *metadata code* called
+        # stratosphère matched a Wikidata atmospheric layer by name.
+        mp={'by_kind':{'Q':{'dik:metadata-value:coordinate:test:mix':'KQ100'}}}
+        write(self.proj/'.kristal/v11/identity-migration-map.json',mp)
+        r=scan(self.src,self.out,self.index)
+        self.assertEqual(r['candidates'],0)
+        self.assertEqual(r['projects_detail'][0]['roles']['METADONNEE_CATEGORIELLE'],1)
+        self.assertEqual(len(read_csv(self.out/'ANALYSE/CANDIDATS.csv')),0)
+
+    def test_archived_decisions_retained_across_scans(self):
+        scan(self.src,self.out,self.index)
+        path=self.out/'ANALYSE/DECISIONS.csv'
+        decisions=read_csv(path);decisions[0]['decision']='rejected'
+        with path.open('w',encoding='utf-8-sig',newline='') as f:
+            w=csv.DictWriter(f,fieldnames=decisions[0]);w.writeheader();w.writerows(decisions)
+        write(self.proj/'.kristal/v11/identity-migration-map.json',
+              {'by_kind':{'Q':{'dik:metadata-value:coordinate:test:mix':'KQ100'}}})
+        scan(self.src,self.out,self.index)
+        self.assertEqual(read_csv(self.out/'ANALYSE/DECISIONS_ARCHIVEES.csv')[0]['decision'],'rejected')
+        scan(self.src,self.out,self.index)
+        self.assertEqual(read_csv(self.out/'ANALYSE/DECISIONS_ARCHIVEES.csv')[0]['decision'],'rejected')
+        (self.proj/'.kristal/v11/identity-migration-map.json').unlink()
+        scan(self.src,self.out,self.index)
+        self.assertEqual(read_csv(self.out/'ANALYSE/DECISIONS.csv')[0]['decision'],'rejected')
+        self.assertEqual(len(read_csv(self.out/'ANALYSE/DECISIONS_ARCHIVEES.csv')),0)
+
+    def test_domain_topic_not_automatically_linked_to_kq(self):
+        source=self.proj/'knowledge-base/sources/layer.json'
+        write(source,{'topic':'couche_atmospherique','claims':[{'statement':{'object':{'value':'Exemple de couche.','kind':'string'}}}]})
+        report=scan(self.src,self.out,self.index)
+        self.assertEqual(report['domain_topics'],1)
+        term=read_csv(self.out/'ANALYSE/NOTIONS_DOMAINE.csv')[0]
+        self.assertEqual(term['existing_kq'],'')
+        self.assertEqual(term['claims_count'],'1')
+        self.assertIn('Exemple de couche.',term['example_claim'])
+
+
+    def test_unicode_output_when_parent_codepage_cp1252(self):
+        # Simulates a Windows Python child inheriting the ANSI codepage.
+        env=dict(os.environ,PYTHONIOENCODING='cp1252:replace')
+        code='from kristalizer.cli import configure_output_encoding; configure_output_encoding(); print("requièrent — utilisé — décisions archivées — succès")'
+        r=subprocess.run([sys.executable,'-c',code],cwd=str(Path(__file__).resolve().parents[1]),
+                         env=env,capture_output=True,check=True)
+        self.assertEqual(r.stdout.decode('utf-8').strip(),
+                         'requièrent — utilisé — décisions archivées — succès')
+
+    def test_topic_suggestions_signal_named_works(self):
+        self.assertEqual(topic_wikidata_risk('births','Births','work of art by Heidi Tikka, 2003'), 'HORS_DOMAINE_PROBABLE')
+        self.assertEqual(topic_wikidata_risk('data quality','Data Quality','article scientifique'), 'HORS_DOMAINE_PROBABLE')
+        self.assertEqual(topic_wikidata_risk('modulation','Modulation','album de Rygar'), 'HORS_DOMAINE_PROBABLE')
+        self.assertEqual(topic_wikidata_risk('channel coding','channel coding','technical process'), 'NOM_IDENTIQUE_NON_PROUVE')
+        self.assertEqual(topic_wikidata_risk('modulation','Modulation','page d’homonymie de Wikimédia'), 'HOMONYMIE')
 
     def test_missing_index_offline(self):
         r=scan(self.src,self.out,self.root/'absent.sqlite')

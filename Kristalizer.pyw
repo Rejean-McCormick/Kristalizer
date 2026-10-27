@@ -20,7 +20,7 @@ DEFAULTS={
 
 class Window:
     def __init__(self):
-        self.root=tk.Tk();self.root.title('Kristalizer 1.1');self.root.geometry('1040x710');self.root.minsize(790,580)
+        self.root=tk.Tk();self.root.title('Kristalizer 1.2.1');self.root.geometry('1040x710');self.root.minsize(790,580)
         conf=dict(DEFAULTS)
         conf_file=CFG if CFG.is_file() else LEGACY_CFG
         if conf_file.is_file():
@@ -57,7 +57,7 @@ class Window:
             button=ttk.Button(outer,text=name,command=cb);button.grid(row=0,column=i,sticky='ew',padx=4,pady=3)
             self.__dict__.setdefault('buttons',[]).append(button)
             outer.columnconfigure(i,weight=1)
-        ttk.Label(outer,text='Après l’analyse : examiner ANALYSE/DECISIONS.csv. Seules les approbations explicites avec KS valide peuvent entrer dans un nouveau crosswalk.',
+        ttk.Label(outer,text='Après analyse : examiner NOTIONS_DOMAINE.csv et CANDIDATS.csv. Les notions sans KQ restent exploratoires; seules les décisions avec KS valide sont promouvables.',
                   wraplength=970).grid(row=1,column=0,columnspan=4,sticky='w',pady=8)
         row=ttk.Frame(outer);row.grid(row=2,column=0,columnspan=4,sticky='ew')
         ttk.Button(row,text='Ouvrir la sortie',command=lambda:self.openfolder('output')).pack(side='left',padx=4)
@@ -95,9 +95,16 @@ class Window:
         def work():
             try:
                 creationflags=0x08000000 if os.name=='nt' else 0
+                # IMPORTANT (Windows): a Python child writing to a pipe may default to cp1252.
+                # UTF-8 decoding alone would turn French accents into U+FFFD.
+                # Make the child emit UTF-8, then decode it as UTF-8 here.
+                child_env=os.environ.copy()
+                child_env.update({'PYTHONIOENCODING':'utf-8:replace',
+                                  'PYTHONUTF8':'1','PYTHONUNBUFFERED':'1',
+                                  'KRISTALIZER_UTF8':'1'})
                 self.process=subprocess.Popen([sys.executable,str(ROOT/'kristalizer.py'),*params],cwd=str(ROOT),
                    stdout=subprocess.PIPE,stderr=subprocess.STDOUT, text=True,encoding='utf-8',errors='replace',
-                   bufsize=1,creationflags=creationflags)
+                   bufsize=1,creationflags=creationflags,env=child_env)
                 for line in self.process.stdout:self.messages.put(('line',line))
                 code=self.process.wait();self.messages.put(('finish',code))
             except Exception as e:self.messages.put(('error',repr(e)))

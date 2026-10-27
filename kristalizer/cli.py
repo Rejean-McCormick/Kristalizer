@@ -1,13 +1,25 @@
 #!/usr/bin/env python3
 """Kristalizer CLI — scan, stage, build, publish and activate on copies."""
-import argparse,json,sys
+import argparse,json,sys,os
 from pathlib import Path
 from kristalizer.core import scan, stage, build, load, import_legacy_decisions
 
 HERE=Path(__file__).resolve().parents[1]
 DEFAULT_KIT=HERE/'vendor/Kristal-Authoring-Kit/tools/kristal.py'
 
+def configure_output_encoding():
+    """Use real Unicode for redirected output even on legacy Windows code pages.
+
+    Windows normally uses the active ANSI code page (e.g., cp1252) for Python
+    stdout when redirected through a pipe. The GUI *always* expects UTF-8.
+    For a real terminal with no UTF-8 opt-in, retain its native encoding.
+    """
+    for stream in (sys.stdout,sys.stderr):
+        if stream is not None and hasattr(stream,'reconfigure') and (not stream.isatty() or os.environ.get('KRISTALIZER_UTF8')=='1'):
+            stream.reconfigure(encoding='utf-8', errors='replace', line_buffering=True)
+
 def main():
+    configure_output_encoding()
     ap=argparse.ArgumentParser(description='Kristalizer: analyse, staging, build et activation locale non destructifs')
     sub=ap.add_subparsers(dest='action',required=True)
     p=sub.add_parser('scan',help='Lire un dossier de Kristals et proposer KQ/QID, KP/PID')
@@ -27,6 +39,8 @@ def main():
             obj=scan(args.source,args.output,args.index,args.max_results)
             print(f"[OK] {obj['projects']} Kristals, {obj['candidates']} candidats; {obj['migration_required']} requièrent une migration v11.")
             print('Index EncyK utilisé:', obj['indexed']['connected'])
+            print('Notions de domaine:',obj['domain_topics'],'; propositions Wikidata de notion:',obj['topic_wikidata_suggestions'])
+            print('Anciens candidats exclus du registre actif:',obj['historical_candidates_excluded'],'; décisions archivées:',obj['decisions_archived'])
         elif args.action=='stage':
             obj=stage(args.source,args.output)
             print('[OK] Copies préparées dans',obj['staging'],'\n',json.dumps(obj['projects'],ensure_ascii=False))

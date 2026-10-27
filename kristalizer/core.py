@@ -173,19 +173,127 @@ def skope_rows(project):
     return sorted(set(out))
 
 
+def identity_roles(project, assets):
+    """Classify migrated KQ by *semantic role*, not by their lexical similarity.
+
+    Bulk-migrated claim referents and metadata codes are not Wikidata topics.
+    Mapping a metadata value such as 'time' to Q11471 would be a false exactMatch.
+    For projects without an explicit legacy migration map, do not guess roles.
+    """
+    path=project/'.kristal/v11/identity-migration-map.json'
+    roles={}
+    if not path.is_file():return roles
+    mp=load(path).get('by_kind',{}).get('Q',{})
+    if not isinstance(mp,dict):return roles
+    for legacy,local in mp.items():
+        if assets['ids'].get(local)!='entity':continue
+        if legacy.startswith('dik:metadata-value:'):
+            roles[local]='METADONNEE_CATEGORIELLE'
+        elif legacy.startswith('urn:foodkristal:source:'):
+            roles[local]='REFERENCE_SOURCE'
+        elif ':concept:' in legacy and re.search(r':\d+$',legacy):
+            roles[local]='REFERENT_ASSERTION'
+        else:
+            roles[local]='DOMAINE_A_VERIFIER'
+    for legacy,local in load(path).get('by_kind',{}).get('P',{}).items():
+        if assets['ids'].get(local)=='property' and (legacy.startswith('dik:metadata:') or legacy.startswith('kristal.source.')):
+            roles[local]='PROPRIETE_STRUCTURELLE_INTERNE'
+    return roles
+
+
+def topic_wikidata_risk(human_label, remote_label, description):
+    """Conservative hints for topic *suggestions*, never identity approvals.
+
+    A subject heading can match the title of a film, song, article or patent.
+    Keep the candidate (no data loss), but clearly mark the disambiguation risk.
+    """
+    d=clean(description)
+    if any(phrase in d for phrase in ('page d homonymie','wikimedia disambiguation',
+                                      'wikimedia disambiguation page')):
+        return 'HOMONYMIE'
+    misleading=(
+        'work of art','artwork','oeuvre d art','scholarly article','article scientifique',
+        'academic article','film sorti','film americain','motion picture','feature film',
+        'album de','music album','song by','chanson de','peinture de','painting by',
+        'television series','serie televisee','tv series','novel by','roman de',
+        'bande dessinee','comic strip','strip de','brevet','us patent',
+        'published in','publication scientifique','single by', 'chanson d',
+        'album d', 'rock band', 'groupe musical', 'bande de rock',
+    )
+    # Require complete phrase matching for short terms such as 'album'.
+    if any(re.search(r'(?<!\w)'+re.escape(phrase)+r'(?!\w)', d) for phrase in misleading):
+        return 'HORS_DOMAINE_PROBABLE'
+    if clean(remote_label)==clean(human_label):return 'NOM_IDENTIQUE_NON_PROUVE'
+    return 'AUTRE_NOM_A_CONTROLER'
+
+
+def topics_from_sources(project, db, max_results):
+    """Inventory explicit claim-set topics, *without fabricating a KQ mapping*.
+
+    Each claim-set often contains hundreds of statement-specific referents. Its
+    topic is an index heading, not an existing KQ exactMatch. Wikidata matches
+    for topics are deliberately in a separate queue.
+    """
+    sources=project/'knowledge-base/sources'
+    topics=[];suggestions=[];catalog_count=0
+    if not sources.is_dir():return topics,suggestions,0
+    for f in sorted(sources.rglob('*.json')):
+        try:obj=load(f)
+        except (ValueError, OSError):continue
+        if not isinstance(obj,dict):continue
+        claims=obj.get('claims')
+        if not isinstance(claims,list):
+            catalog_count+=1;continue
+        topic=obj.get('topic') or f.stem
+        if not isinstance(topic,str) or not topic.strip():topic=f.stem
+        # Source headings are suggestions, NOT local canonical entity labels.
+        human_label=topic.replace('_',' ').replace('-',' ').strip()
+        example=''
+        for claim in claims:
+            if not isinstance(claim,dict):continue
+            subject=claim.get('statement',{})
+            text=subject.get('object',{}) if isinstance(subject,dict) else {}
+            if isinstance(text,dict) and isinstance(text.get('value'),str):
+                example=text['value'][:320];break
+        row={'project':project.name,'topic':topic,'label_search':human_label,
+             'source_file':f.relative_to(project).as_posix(),
+             'claims_count':len(claims),'example_claim':example,
+             'existing_kq':'',
+             'identity_status':'NOTION_A_MODELER_SANS_KQ_CERTIFIE',
+             'note':'Intitulé de section, pas identité KQ ni exactMatch'}
+        topics.append(row)
+        for remote in db.matches(human_label,'Q',max_results):
+            desc=remote['description']; label=remote['label']
+            risk=topic_wikidata_risk(human_label,label,desc)
+            suggestions.append({'project':project.name,'topic':topic,'label_search':human_label,
+                'source_file':row['source_file'],'wikidata_id':remote['wid'],
+                'wikidata_label':label,'wikidata_description':desc,
+                'risk':risk,'status':'EXPLORATOIRE_SANS_KQ',
+                'note':'Proposition de notion : aucune insertion dans les décisions KQ'})
+    return topics,suggestions,catalog_count
+
+
 def audit_project(project,db,max_lookups=8):
     assets=v11_assets(project)
     if assets is None:
         return {'project':project.name,'state':'MIGRATION_V11_REQUISE','candidates':[], 'count':0,
+                'excluded':[], 'roles':{},'topics':[],'topic_suggestions':[], 'source_catalog_files':0,
                 'detail':'Aucun ensemble registre/graphe/crosswalk/catalog v11 complet; aucune identité fabriquée.'}
-    reg=assets['objects']['registry']; ids=assets['ids'];ns=assets['namespace']
+    ids=assets['ids'];ns=assets['namespace']
     labels,_=labels_from_catalog(project,assets)
+    roles=identity_roles(project,assets)
     skope_names=skope_candidate_labels(project)
-    found={}
+    found={};excluded={}
     def candidate(local_id,ext,origin):
         if not ID_RE.fullmatch(local_id) or not WD_RE.fullmatch(ext) or local_id[1]!=ext[0]:return
         if ids.get(local_id)!= ('entity' if local_id.startswith('KQ') else 'property'):return
-        k=(local_id,ext);found.setdefault(k,set()).add(origin)
+        k=(local_id,ext)
+        role=roles.get(local_id,'DOMAINE_A_VERIFIER')
+        if role in ('METADONNEE_CATEGORIELLE','REFERENT_ASSERTION','REFERENCE_SOURCE','PROPRIETE_STRUCTURELLE_INTERNE'):
+            excluded.setdefault(k,{'project':project.name,'local_id':local_id,'external_id':ext,
+                'local_label':labels.get(local_id,''),'reason':role,'origin':origin})
+            return
+        found.setdefault(k,set()).add(origin)
     for local,external in skope_rows(project):candidate(local,external,'skope')
     for m in assets['objects']['crosswalk'].get('mappings',[]):
         lr=m.get('local_ref',{});er=m.get('external_ref',{})
@@ -194,6 +302,8 @@ def audit_project(project,db,max_lookups=8):
     if db.names:
         for local,kind in ids.items():
             if kind not in ('entity','property') or not labels.get(local):continue
+            if roles.get(local) in ('METADONNEE_CATEGORIELLE','REFERENT_ASSERTION','REFERENCE_SOURCE','PROPRIETE_STRUCTURELLE_INTERNE'):
+                continue
             searched+=1
             for remote in db.matches(labels[local],local[1],max_lookups):candidate(local,remote['wid'],'index_nom_alias')
     rows=[]
@@ -214,8 +324,12 @@ def audit_project(project,db,max_lookups=8):
                      'origin':'+'.join(sorted(origins)),'name_relation':status,'risk':risk,
                      'evidence':'SOURCE_SKOPE' if 'skope' in origins else 'AUCUNE_PREUVE_KS_VALIDEE',
                      'decision_hint':'review'})
+    topics,suggestions,catalog_count=topics_from_sources(project,db,max_lookups)
     return {'project':project.name,'state':'V11_ACTIF' if assets['active_profile'] else 'V11_NON_ACTIVE',
-            'candidates':rows,'count':len(rows),'namespace':ns,'indexed_labels':searched,
+            'candidates':rows,'excluded':list(excluded.values()),'count':len(rows),
+            'topics':topics,'topic_suggestions':suggestions,'source_catalog_files':catalog_count,
+            'roles':dict(Counter(roles.values())),
+            'namespace':ns,'indexed_labels':searched,
             'skope_present':bool((project/'sources/wikidata-skope/current.json').is_file())}
 
 
@@ -225,27 +339,57 @@ def scan(source,output,index=None,max_lookups=8):
     projects=discover(source)
     if len({p.name.casefold() for p in projects}) != len(projects):raise ValueError('Noms de Kristals ambigus.')
     out=output/'ANALYSE';out.mkdir(parents=True,exist_ok=True)
-    old=read_csv(out/'DECISIONS.csv')
-    olddec={(r['project'],r['local_id'],r['external_id']):r for r in old}
-    allrows=[];reports=[]
+    old=read_csv(out/'DECISIONS.csv');archived=read_csv(out/'DECISIONS_ARCHIVEES.csv')
+    # Decisions reappearing after an updated scan can be restored, preserving
+    # reviews and approved/rejected statuses. Never delete old retired decisions.
+    previous={(r['project'],r['local_id'],r['external_id']):r for r in archived}
+    previous.update({(r['project'],r['local_id'],r['external_id']):r for r in old})
+    old_candidates=read_csv(out/'CANDIDATS.csv')
+    old_exclusions=read_csv(out/'CANDIDATS_EXCLUS.csv')
+    allrows=[];reports=[];excluded=[];topics=[];suggestions=[]
+    roles_by_project={}
     with EncyIndex(index) as db:
         for project in projects:
             report=audit_project(project,db,max_lookups)
-            allrows.extend(report.pop('candidates'));reports.append(report)
+            allrows.extend(report.pop('candidates'))
+            excluded.extend(report.pop('excluded'))
+            topics.extend(report.pop('topics'))
+            suggestions.extend(report.pop('topic_suggestions'))
+            reports.append(report)
+            assets=v11_assets(project)
+            roles_by_project[project.name]=identity_roles(project,assets) if assets else {}
         index_state={'index':str(db.path) if db.path else None,'connected':db.db is not None,'name_search_available':db.names}
     allrows.sort(key=lambda r:(r['project'],r['kind'],r['local_id'],r['external_id']))
     current={(r['project'],r['local_id'],r['external_id']) for r in allrows}
-    decisions=[olddec.get(key,{'project':key[0],'local_id':key[1],'external_id':key[2],
+    decisions=[previous.get(key,{'project':key[0],'local_id':key[1],'external_id':key[2],
            'decision':'pending','reviewer':'','reason':'','evidence_refs':''}) for key in
            [(r['project'],r['local_id'],r['external_id']) for r in allrows]]
-    retired=[r for key,r in olddec.items() if key not in current]
+    retired=[r for key,r in sorted(previous.items()) if key not in current]
+    for r in old_candidates:
+        key=(r['project'],r['local_id'],r['external_id'])
+        if key not in current and not any((e['project'],e['local_id'],e['external_id'])==key for e in excluded):
+            excluded.append({'project':r['project'],'local_id':r['local_id'],'external_id':r['external_id'],
+                'local_label':r.get('local_label',''),'reason':roles_by_project.get(r['project'],{}).get(r['local_id'],'ANCIEN_CANDIDAT_NON_REPRODUIT'),
+                'origin':r.get('origin','')})
+    # Show the exact historical pairs removed from the active register.
+    newly_excluded={(r['project'],r['local_id'],r['external_id']):r for r in old_exclusions
+                    if (r['project'],r['local_id'],r['external_id']) not in current}
+    newly_excluded.update({(r['project'],r['local_id'],r['external_id']):r for r in excluded})
     write_csv(out/'CANDIDATS.csv',allrows,CANDIDATE_FIELDS)
     write_csv(out/'DECISIONS.csv',decisions,DECISION_FIELDS)
     write_csv(out/'DECISIONS_ARCHIVEES.csv',retired,DECISION_FIELDS)
-    stats={'format':'kristal.kristalizer.scan/1.1','generated_at':datetime.now(timezone.utc).isoformat(),
-           'projects':len(projects),'candidates':len(allrows),'existing_decisions_preserved':sum(k in olddec for k in current),
+    write_csv(out/'CANDIDATS_EXCLUS.csv',list(newly_excluded.values()),
+              ['project','local_id','external_id','local_label','reason','origin'])
+    write_csv(out/'NOTIONS_DOMAINE.csv',topics,
+              ['project','topic','label_search','source_file','claims_count','example_claim','existing_kq','identity_status','note'])
+    write_csv(out/'SUGGESTIONS_NOTIONS_WIKIDATA.csv',suggestions,
+              ['project','topic','label_search','source_file','wikidata_id','wikidata_label','wikidata_description','risk','status','note'])
+    stats={'format':'kristal.kristalizer.scan/1.2.1','generated_at':datetime.now(timezone.utc).isoformat(),
+           'projects':len(projects),'candidates':len(allrows),'historical_candidates_excluded':len(newly_excluded),
+           'decisions_archived':len(retired),'existing_decisions_preserved':sum(k in previous for k in current),
+           'domain_topics':len(topics),'topic_wikidata_suggestions':len(suggestions),
            'indexed':index_state,'projects_detail':reports,'migration_required':sum(r['state']=='MIGRATION_V11_REQUISE' for r in reports),
-           'notice':'Aucun exactMatch, KS ni KA n’a été approuvé par le scan.'}
+           'notice':'Les notions documentaires ne sont pas des KQ. Aucun exactMatch, KS ni KA n’est approuvé par le scan.'}
     dump(out/'RAPPORT.json',stats)
     return stats
 
