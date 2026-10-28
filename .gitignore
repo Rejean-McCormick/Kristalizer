@@ -15,3 +15,5 @@ bridge-config.json
 *.sqlite-wal
 .DS_Store
 Thumbs.db
+ZmartZnap.pyw
+GitSink.bat

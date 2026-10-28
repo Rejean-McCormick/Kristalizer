@@ -1,0 +1,46 @@
+{
+  "format": "documentation-translation-report/1.0",
+  "translation_language": "en",
+  "source_archive": "znapshot_Kristalizer_10280912.zip",
+  "source_archive_sha256": "d6f0dc06d3277e9a219c582a36bc5c2a6e6639675c73ae5b5da4a394b994ec93",
+  "software_changed": false,
+  "scope": "main-repository Markdown documentation, excluding bundled vendor dependencies; no code or structured data translation",
+  "translated_paths": [
+    {
+      "path": "CHANGELOG.md",
+      "original_sha256": "0c9cd09dad01da0a8cc4fe822ccc52e88f86c4a124aed07afe14d91b6d546a9f",
+      "english_sha256": "b2250099a4e735a553453b1e1429142fb6be45ff165197bcebc7a439860fae5e"
+    },
+    {
+      "path": "LIRE_MOI.md",
+      "original_sha256": "7a1830e77c4f14edf95db2c607556c364ac0e571f74d44e50cf6bea72a584211",
+      "english_sha256": "d785988829dcfbb9d70a1c9f7acfed2d2ffdec5fba56749dc0d0c65d762bb51e"
+    },
+    {
+      "path": "LIRE_MOI_V12.md",
+      "original_sha256": "22e851c3ffe517d9460b2f6c85ca8d6344c5dbe66dd40144dc68ad1681ae97ee",
+      "english_sha256": "7ead9c8771a98eee4331a7c4ddcdd6d19f32d3d06476d230533ebf936625befb"
+    },
+    {
+      "path": "LIRE_MOI_V121.md",
+      "original_sha256": "cf63866c82854d38e853caa39c0bf28cb20c486ed0e99bf79d157865c0ac68c2",
+      "english_sha256": "e58f48de18fff039103ae7b2c3b3ee5d5747c6533531e52df622ff5660511ccc"
+    },
+    {
+      "path": "LIRE_MOI_V122.md",
+      "original_sha256": "f8088ac397a01ce367cdd301e0f662208395c278083f787289966279361e4e4f",
+      "english_sha256": "ca7fbab9de46316c15cf2c3bea70a9d9be87acc7d77c208877c9e5152f56dc6b"
+    },
+    {
+      "path": "NOTES_TECHNIQUES.md",
+      "original_sha256": "5e2edfbf5152120a1367da856227add9a783cd6db949c2be906f6ad18bd62120",
+      "english_sha256": "f08dbd9145236cc8bc2b48d406dfff3b76354a1ef518c6af248ce3384118d20b"
+    },
+    {
+      "path": "README.md",
+      "original_sha256": "82d78cbcc1e6ab56266fc39e04bfdce039ed1ce33896e2d035a4963952b7697a",
+      "english_sha256": "eadfb66e56eb1f07a006db06c02e6cc61959bf15587c71535669812f3f3a75d1"
+    }
+  ],
+  "historical_manifests": "Retained in their historical state where present; consult this translation manifest for modified documents."
+}

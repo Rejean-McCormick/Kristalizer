@@ -1,28 +1,28 @@
 ## 1.2.2
 
 - Force UTF-8 in the GUI subprocess and Windows launchers, fixing mojibake in French console output.
-- Retains all Wikidata topic suggestions but flags clearly unrelated named works for review.
-- Adds regression tests for Windows ANSI pipe encoding and topic homonyms.
+- Retain all Wikidata topic suggestions but flag clearly unrelated named works for review.
+- Add regression tests for Windows ANSI pipe encoding and topic homonyms.
 
-## 1.2.0 — Scan sensible aux rôles d'identité
+## 1.2.0 — Identity-role-aware scanning
 
-- Détecte les KQ métadonnées, référents d'assertion et fiches documentaires migrées.
-- Évite les faux `exactMatch` obtenus par simple égalité de libellé.
-- Extrait les sujets des `claim-set` comme **notions à modéliser**, sans inventer des KQ.
-- Archive les anciennes décisions et exclusions lors des scans successifs.
-- Préserve la chaîne staging / build / activation du logiciel 1.1.
+- Detect KQs representing metadata values, assertion referents, and migrated source records.
+- Prevent false `exactMatch` mappings based solely on label equality.
+- Extract subjects from `claim-set` records as **concepts to model**, without inventing KQs.
+- Archive previous decisions and exclusions during successive scans.
+- Preserve the staging/build/activation pipeline from software version 1.1.
 
 # Changelog
 
-## 1.2.0 — Kristalizer (renommage du dépôt et du produit)
+## 1.2.0 — Kristalizer (repository and product renamed)
 
-- Nom, GUI, lanceurs, CLI, paquet Python, métadonnées et documentation regroupés sous **Kristalizer**.
-- Nouvelles sorties `KRISTALIZER_STAGE_REPORT.json` et `KRISTALIZER_BUILD_REPORT.json`, sans perdre la lecture des anciens rapports Bridge.
-- Import des anciens états de décisions et migration de l'ancienne configuration d'interface.
-- ZIP autonome avec le Kit fourni ; exemples pour un projet seul ou n'importe quel dossier de Kristals.
-- Ne change pas le périmètre d'enrichissement des KA/KS : celui-ci viendra dans le travail v11.1.
+- Unify the name, GUI, launchers, CLI, Python package, metadata, and documentation under **Kristalizer**.
+- Introduce `KRISTALIZER_STAGE_REPORT.json` and `KRISTALIZER_BUILD_REPORT.json` outputs while continuing to read legacy Bridge reports.
+- Import previous decision states and migrate the former GUI configuration.
+- Supply a standalone ZIP bundling the Kit, with examples for one project or any directory containing Kristals.
+- Leave the scope of KA/KS enrichment unchanged; this work is planned for v11.1.
 
-## 1.0.0 — Base universelle antérieure
+## 1.0.0 — Previous universal baseline
 
-- Quatre actions de scan, staging, construction et activation en remplacement des outils spécialisés v1–v13.
-- Requêtes EncyK en lecture seule, candidats Skope facultatifs et conservation des décisions.
+- Four scan, staging, build, and activation actions replace specialized v1–v13 tools.
+- Read-only EncyK queries, optional Skope candidates, and decision preservation.

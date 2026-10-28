@@ -1,11 +1,11 @@
 # Version 1.2.2
 
-Nouveautés du scan :
+New scan features:
 
-- `LIAISONS_NOTIONS_ASSERTIONS.csv` : lien exact entre les `claims` des sources de connaissance et les KQ/KA existants du projet, via la carte de migration v11. Le logiciel n’invente pas d’identités.
-- `REVUE_IDENTITES_NOTIONS.csv` : bilan par notion et candidats Wikidata ne correspondant pas à une homonymie ou publication manifestement hors domaine.
-- Filtre de descriptions étoffé pour `scientific article`, `journal article`, `book by` et `US patent`.
+- `LIAISONS_NOTIONS_ASSERTIONS.csv`: exact linkage between claims from knowledge sources and existing project KQ/KA identities through the v11 migration map. The software does not invent identities.
+- `REVUE_IDENTITES_NOTIONS.csv`: a concept-by-concept review and Wikidata candidates excluding obvious out-of-domain namesakes or publications.
+- Expanded description filter for `scientific article`, `journal article`, `book by`, and `US patent`.
 
-Analyse strictement non destructive; aucune création automatique de KQ, KS, KA ou d’`exactMatch`.
+Analysis is strictly non-destructive; it does not automatically create KQ, KS, KA, or `exactMatch` records.
 
-Les anciens résultats restent lisibles. Ouvre `LANCER_KRISTALIZER.cmd` et clique sur « 1. Analyser » pour les futurs Kristals.
+Previous results remain readable. Open `LANCER_KRISTALIZER.cmd` and click “1. Analyser” (Analyze) for future Kristals.

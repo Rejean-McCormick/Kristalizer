@@ -1,21 +1,21 @@
-# Kristalizer 1.2.1 — correction Unicode de la console
+# Kristalizer 1.2.1 — console Unicode fix
 
-## Correction
+## Fix
 
-Dans le journal Tkinter, Windows pouvait afficher `requi�rent` ou `utilis�` : le processus enfant émettait du texte dans la page de codes Windows, alors que le GUI le décodait en UTF-8. Le lanceur définit désormais `PYTHONIOENCODING=utf-8:replace`, `PYTHONUTF8=1` et `KRISTALIZER_UTF8=1`; le GUI force la même configuration pour les sous-processus. Les deux `.cmd` sélectionnent la page de codes 65001.
+In the Tkinter log, Windows could display `requi�rent` or `utilis�`: the child process emitted text in the Windows code page while the GUI decoded it as UTF-8. The launcher now sets `PYTHONIOENCODING=utf-8:replace`, `PYTHONUTF8=1`, and `KRISTALIZER_UTF8=1`; the GUI forces the same configuration for subprocesses. Both `.cmd` files select code page 65001.
 
-Le moteur conserve les caractères Unicode dans les rapports JSON et CSV UTF-8-BOM. Aucun changement n'est apporté aux règles d'approbation des KQ, KS ou KA.
+The engine preserves Unicode characters in JSON reports and UTF-8-BOM CSV files. KQ, KS, and KA approval rules have not changed.
 
-## Suggestions de notions Wikidata
+## Wikidata concept suggestions
 
-Les propositions qui correspondent par le nom mais dont la description désigne clairement une œuvre, un album, un film, un article scientifique, une chanson, un brevet ou une homonymie sont signalées comme `HORS_DOMAINE_PROBABLE` ou `HOMONYMIE`. Elles restent intégralement dans `SUGGESTIONS_NOTIONS_WIKIDATA.csv` pour audit; rien n'est effacé ou rejeté automatiquement. Ce filtre est heuristique.
+Suggestions with matching names but descriptions clearly referring to a creative work, album, film, scientific article, song, patent, or namesake are flagged as `HORS_DOMAINE_PROBABLE` or `HOMONYMIE`. They remain in full in `SUGGESTIONS_NOTIONS_WIKIDATA.csv` for auditing; nothing is automatically deleted or rejected. This is a heuristic filter.
 
 ## Installation
 
-Extraire le ZIP dans un nouveau dossier `Kristalizer` ou remplacer les fichiers du programme existants **sans écraser `SORTIE`**, puis lancer `LANCER_KRISTALIZER.cmd` et l'action « 1. Analyser ». L'analyse ne modifie aucun Kristal source.
+Extract the ZIP into a new `Kristalizer` directory or replace the existing program files **without overwriting `SORTIE`**. Then run `LANCER_KRISTALIZER.cmd` and select “1. Analyser” (Analyze). The analysis does not modify any source Kristal.
 
-## Vérification rapide
+## Quick verification
 
-Le journal doit afficher les accents de `requièrent`, `utilisé`, `décisions archivées` et `FIN : succès` sans caractères de remplacement `�`.
+The log must display accents correctly in `requièrent`, `utilisé`, `décisions archivées`, and `FIN : succès` without replacement characters (`�`).
 
-Tests: `py -3 -m unittest discover -s tests -v`. Cette version est testée sous Linux avec une page de codes Windows simulée; son rendu graphique reste à confirmer sur ton Windows.
+Tests: `py -3 -m unittest discover -s tests -v`. This version was tested on Linux with a simulated Windows code page; graphical rendering still needs confirmation on your Windows machine.

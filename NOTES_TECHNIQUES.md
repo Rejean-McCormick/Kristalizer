@@ -1,15 +1,15 @@
 # Architecture — Kristalizer 1.1
 
-- `Kristalizer.pyw` : interface Tkinter sans dépendance tierce ; les traitements tournent dans un processus séparé.
-- `kristalizer.py` : CLI autonome ; `kristalizer/cli.py` : point d'entrée équivalent pour une installation de développement.
-- `kristalizer/core.py` : découverte de workspaces, EncyIndex SQLite lecture seule, dictionnaires v11, import Skope, analyse, préservation des décisions, préparation non destructive des crosswalks, puis exécution du Kit.
-- `vendor/Kristal-Authoring-Kit` : copie inchangée du Kit d'origine et de ses contrats. Son verrou Framework v11 est `draft.3`.
-- `tests/` : tests hors ligne sans dump Wikidata réel, avec base SQLite factice.
+- `Kristalizer.pyw`: Tkinter interface with no third-party dependency; processing runs in a separate process.
+- `kristalizer.py`: standalone CLI; `kristalizer/cli.py`: equivalent entry point for development installations.
+- `kristalizer/core.py`: workspace discovery, read-only SQLite EncyIndex, v11 dictionaries, Skope imports, analysis, decision preservation, non-destructive crosswalk preparation, then Kit execution.
+- `vendor/Kristal-Authoring-Kit`: unchanged copy of the original Kit and its contracts. Its Framework v11 pin is `draft.3`.
+- `tests/`: offline tests using a synthetic SQLite database, without a real Wikidata dump.
 
-**Contrats de sortie (nouveaux)** : `ANALYSE/{CANDIDATS,DECISIONS,RAPPORT}.csv/json`, `STAGING/<id>/KRISTALIZER_STAGE_REPORT.json`, `STAGING/<id>/KRISTALIZER_BUILD_REPORT.json`, `<Kristal>/KRISTALIZER_PENDING_ACTIVATION.json`.
+**New output contracts:** `ANALYSE/{CANDIDATS,DECISIONS,RAPPORT}.csv/json`, `STAGING/<id>/KRISTALIZER_STAGE_REPORT.json`, `STAGING/<id>/KRISTALIZER_BUILD_REPORT.json`, `<Kristal>/KRISTALIZER_PENDING_ACTIVATION.json`.
 
-**Compatibilité historique** : le moteur peut reprendre les fichiers `BRIDGE_STAGE_REPORT.json` et `BRIDGE_PENDING_ACTIVATION.json`, ainsi que les décisions CSV des versions précédentes. Il préserve les identifiants historiquement enregistrés par le Kit ; voir les tests de régression.
+**Backward compatibility:** the engine can reuse `BRIDGE_STAGE_REPORT.json`, `BRIDGE_PENDING_ACTIVATION.json`, and CSV decisions from previous versions. It preserves identifiers historically recorded by the Kit; see regression tests.
 
-**Garanties** : EncyK est ouvert avec SQLite `mode=ro`, aucune modification du dossier source ; toute publication/activation est limitée aux copies sous `STAGING` ; les décisions candidates n'entraînent aucune promotion canonique implicite.
+**Guarantees:** EncyK is opened with SQLite `mode=ro`; source directories are never modified. All publication/activation is limited to copies under `STAGING`; candidate decisions never imply canonical promotion.
 
-**Limites** : le moteur ne réalise pas encore la promotion massive de connaissances de domaine Wikidata vers des KA/KS canoniques, et ne crée pas les artefacts v11 manquants pour un Kristal encore non migré. Cela relève de la prochaine phase v11.1.
+**Limitations:** the engine does not yet bulk-promote Wikidata domain knowledge into canonical KA/KS records, and it does not create missing v11 artifacts for Kristals that have not been migrated. This is part of the next v11.1 phase.
