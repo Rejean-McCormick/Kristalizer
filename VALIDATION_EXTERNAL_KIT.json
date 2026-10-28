@@ -1,0 +1,20 @@
+{
+  "scope": "Kristalizer 1.2.2 external Authoring Kit integration",
+  "status": "local validation, not release qualification",
+  "source_kristalizer": "Kristalizer_EN_reupload_2026-10-28.zip",
+  "canonical_kit_snapshot": "znapshot_Kristal-Authoring-Kit_10281000.zip",
+  "canonical_kit_version": "4.0.0-draft.4",
+  "framework_pin": "11.0.0-draft.4",
+  "tests": {
+    "unittest": "23 passed",
+    "external_kit_preflight": "passed with supplied Kit snapshot",
+    "full_integration_build": "not run",
+    "Windows_GUI": "not exercised (non-Windows runtime)"
+  },
+  "constraints": [
+    "No Kit code, templates, contracts, or schemas packaged",
+    "No GitHub or remote changes",
+    "No automatic network access to update Kit",
+    "Build modifies staging copies only"
+  ]
+}

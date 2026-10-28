@@ -8,6 +8,7 @@ from __future__ import annotations
 import csv, hashlib, json, re, shutil, sqlite3, subprocess, sys, unicodedata
 from collections import Counter, defaultdict
 from .topic_index import build_topic_index
+from .kit_reference import resolve_kit
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -522,9 +523,22 @@ def kit_command(kit_script,project,command,*args):
 
 def build(staging,kit_script,publish=False,activate=False):
     if activate and not publish:raise ValueError('Activation exige --publish explicite.')
-    root=Path(staging).resolve();kit_script=Path(kit_script).resolve()
-    if not kit_script.is_file():raise FileNotFoundError('Kit tools/kristal.py non trouvé: '+str(kit_script))
-    prior=root/'KRISTALIZER_STAGE_REPORT.json'
+    root=Path(staging).resolve()
+    # Resolve canonical Kit before touching any staged artifacts.
+    kit_meta=resolve_kit(kit_script)
+    kit_script=Path(kit_meta['script'])
+    if Path(kit_meta['root']).is_relative_to(root):
+        raise ValueError('Authoring Kit must not be located in staging')
+    def run_kit(project, command, *args):
+        # One Kit authority per build: detect changes to its executable and
+        # version pin during a staged operation. Never mix draft revisions.
+        tracked = {'script':kit_script, 'version':Path(kit_meta['root'])/'VERSION',
+                   'pin':Path(kit_meta['root'])/'contracts/v11-framework-pin.json'}
+        for name,path in tracked.items():
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=kit_meta['fingerprints_sha256'][name]:
+                raise RuntimeError('Canonical Authoring Kit changed during this build: ' + str(path))
+        return kit_command(kit_script,project,command,*args)
+    prior=root/'KRISTALIZER_STAGE_REPORT.json' 
     if not prior.is_file():prior=root/'BRIDGE_STAGE_REPORT.json'  # compatibilité historique
     if not prior.is_file():raise ValueError('Dossier STAGING invalide (rapport manquant).')
     report=load(prior);results=[]
@@ -555,7 +569,7 @@ def build(staging,kit_script,publish=False,activate=False):
                             raise ValueError('Conflit d’enregistrement '+key)
                         if not exists:
                             phase='register-'+key
-                            kit_command(kit_script,proj,'register-artifact','--file',x[key],
+                            run_kit(proj,'register-artifact','--file',x[key],
                                         '--artifact-id',logical_id,'--contract-id',contract,'--contract-version','11.0')
                     phase='register-crosswalk'
                 state_index=load(proj/'canon/state.index.json')
@@ -564,7 +578,7 @@ def build(staging,kit_script,publish=False,activate=False):
                     if len(registered)!=1 or registered[0].get('path')!=x['new_crosswalk']:
                         raise ValueError('Conflit de reprise: identifiant déjà engagé pour un autre artefact.')
                 else:
-                    kit_command(kit_script,proj,'register-artifact','--file',x['new_crosswalk'],'--artifact-id',kid,
+                    run_kit(proj,'register-artifact','--file',x['new_crosswalk'],'--artifact-id',kid,
                                 '--contract-id','kristal.v11.external-crosswalk','--contract-version','11.0')
                 phase='enable-v11'
                 # The Kit refuses to overwrite an existing v11 profile. There is no
@@ -582,7 +596,7 @@ def build(staging,kit_script,publish=False,activate=False):
                     if not history.exists():history.write_bytes(original_profile)
                     profile.unlink()  # strictly the staging copy; backup above
                 try:
-                    kit_command(kit_script,proj,'enable-v11','--registry',x['registry'],'--graph',x['graph'],
+                    run_kit(proj,'enable-v11','--registry',x['registry'],'--graph',x['graph'],
                                 '--crosswalk',x['new_crosswalk'],'--catalog',x['catalog'])
                 except Exception:
                     if original_profile is not None and not profile.exists():profile.write_bytes(original_profile)
@@ -590,21 +604,22 @@ def build(staging,kit_script,publish=False,activate=False):
                 # Consumed marker removed ONLY after successful enable, prevents double register on rerun.
                 manifest.rename(proj/'KRISTALIZER_CROSSWALK_APPLIQUE.json')
             phase='check-v11'
-            kit_command(kit_script,proj,'check-v11')
+            run_kit(proj,'check-v11')
             phase='check'
-            kit_command(kit_script,proj,'check')
+            run_kit(proj,'check')
             phase='build-v9'
-            kit_command(kit_script,proj,'build-v9')
+            run_kit(proj,'build-v9')
             if publish:
-                phase='publish-v9';kit_command(kit_script,proj,'publish-v9')
+                phase='publish-v9';run_kit(proj,'publish-v9')
             if activate:
-                phase='activate-v9';kit_command(kit_script,proj,'activate-v9','--channel','current')
+                phase='activate-v9';run_kit(proj,'activate-v9','--channel','current')
             results.append({'project':proj.name,'status':'ACTIVE' if activate else 'PUBLIE' if publish else 'BUILT','checks':'passed'})
         except Exception as exc:
             results.append({'project':proj.name,'status':'FAILED','phase':phase,'error':str(exc)})
             # Continue to other projects, retain failing staging for diagnosis.
     outcome={'format':'kristal.kristalizer.build/1.1','staging':str(root), 'publish':publish,'activate':activate,
-             'projects':results,'failures':sum(r['status']=='FAILED' for r in results)}
+             'projects':results,'failures':sum(r['status']=='FAILED' for r in results),
+             'authoring_kit':kit_meta}
     dump(root/'KRISTALIZER_BUILD_REPORT.json',outcome)
     return outcome
 

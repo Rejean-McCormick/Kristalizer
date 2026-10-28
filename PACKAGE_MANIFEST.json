@@ -1,0 +1,143 @@
+{
+  "format": "kristalizer-external-kit-archive/1.0",
+  "kristalizer_version": "1.2.2",
+  "kit_mode": "external-only",
+  "file_count": 27,
+  "files": [
+    {
+      "path": ".github/workflows/tests.yml",
+      "sha256": "f0ef6fcc526a26192aaa22d5dbad51627324c05f8a20164d716258b3c119419e",
+      "bytes": 504
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "90bf5f54a803c3674eec5cacd356aa5c4df0f716c7e1231176029ad1bf80e793",
+      "bytes": 266
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "b2250099a4e735a553453b1e1429142fb6be45ff165197bcebc7a439860fae5e",
+      "bytes": 1517
+    },
+    {
+      "path": "EXTERNAL_AUTHORING_KIT.md",
+      "sha256": "56c739522f427ca6106e5fa7f61e6163ba3fd7efcc9ca90aa04860f8b4f925b8",
+      "bytes": 2340
+    },
+    {
+      "path": "GITHUB_DESCRIPTION.txt",
+      "sha256": "38531a7cfc262ad23673da709e836ec097a259d0d86c8feabbba267edd71f238",
+      "bytes": 318
+    },
+    {
+      "path": "INTEGRATION_CHANGELOG_EN.md",
+      "sha256": "5079cc7b99cf3b4cc826077b7ad2f298ea58cb083166387bed0cffe00d6be691",
+      "bytes": 793
+    },
+    {
+      "path": "Kristalizer.pyw",
+      "sha256": "b79b9a4290e2b80d90532e1401d6f089af2af8c7e09227c290509fd911725040",
+      "bytes": 10619
+    },
+    {
+      "path": "LANCER_CONSOLE.cmd",
+      "sha256": "8fa18bf6731c5b3e1586f5ca1e139b678115b51e17c68240a6832e8b108d902e",
+      "bytes": 342
+    },
+    {
+      "path": "LANCER_KRISTALIZER.cmd",
+      "sha256": "f588a0346bfa41075e0516b95d414dc5cfdb6bfb2c959a23f1c5ae3848348238",
+      "bytes": 513
+    },
+    {
+      "path": "LIRE_MOI.md",
+      "sha256": "d785988829dcfbb9d70a1c9f7acfed2d2ffdec5fba56749dc0d0c65d762bb51e",
+      "bytes": 437
+    },
+    {
+      "path": "LIRE_MOI_V12.md",
+      "sha256": "7ead9c8771a98eee4331a7c4ddcdd6d19f32d3d06476d230533ebf936625befb",
+      "bytes": 2146
+    },
+    {
+      "path": "LIRE_MOI_V121.md",
+      "sha256": "e58f48de18fff039103ae7b2c3b3ee5d5747c6533531e52df622ff5660511ccc",
+      "bytes": 1555
+    },
+    {
+      "path": "LIRE_MOI_V122.md",
+      "sha256": "ca7fbab9de46316c15cf2c3bea70a9d9be87acc7d77c208877c9e5152f56dc6b",
+      "bytes": 716
+    },
+    {
+      "path": "NOTES_TECHNIQUES.md",
+      "sha256": "6c3dbaa85f63ad8af46836c9be7100aa2404374992f881ca48bf4110526ca3c9",
+      "bytes": 1767
+    },
+    {
+      "path": "README.md",
+      "sha256": "3d98a1fea4e0c619d194316cb8a45042d9e29d60f856cf2eab45f04f261366c3",
+      "bytes": 6594
+    },
+    {
+      "path": "SOURCE_PROVENANCE_EN.md",
+      "sha256": "8d46e757775011154c84f2b980c25bf542cc5645de05f42a9148171ba3159bcb",
+      "bytes": 693
+    },
+    {
+      "path": "VALIDATION_EXTERNAL_KIT.json",
+      "sha256": "bd0cd43b057799feae85da94278175cf106a9622d27d58fa0b0726f3635fa904",
+      "bytes": 774
+    },
+    {
+      "path": "VERSION",
+      "sha256": "c62a5cc61ac4525935753f5ec284c0a052a4b1da4b3a3580dce2b7d77a2154ae",
+      "bytes": 6
+    },
+    {
+      "path": "kristalizer.py",
+      "sha256": "2301dbf096e47f927087228bb4d4fad383ed329fb1284a0fcc64f1bdffa1510d",
+      "bytes": 169
+    },
+    {
+      "path": "kristalizer/__init__.py",
+      "sha256": "54afb6192643ecdfc35a9333e4a68542e5f5f82d5528bf709a12783bab60e18f",
+      "bytes": 97
+    },
+    {
+      "path": "kristalizer/cli.py",
+      "sha256": "4f84ea5caab21c14a16ab379de72e3edcc8c05d87e5793072c8b403bf7b2537f",
+      "bytes": 4687
+    },
+    {
+      "path": "kristalizer/core.py",
+      "sha256": "b438935f7385e6c430ea3dfc4dea6a93274f2a39193f3d90f208500a90da0b12",
+      "bytes": 39991
+    },
+    {
+      "path": "kristalizer/kit_reference.py",
+      "sha256": "2e1dbc47e97a969196f7def8efb58972ad8ea0757d650d5931a387c028a436b5",
+      "bytes": 5852
+    },
+    {
+      "path": "kristalizer/topic_index.py",
+      "sha256": "b3f90713a1e6cd24538f8956eab2a38aca937f1f4ee93bea7d3735801ede1f7e",
+      "bytes": 2262
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "6f62d9748360890211543fead4f97454f5c6ce396dc8f974cedc6b432b376f78",
+      "bytes": 381
+    },
+    {
+      "path": "tests/test_external_kit.py",
+      "sha256": "57eff67382c1ee028ab31cc1de2a9532988b0fa963f61524ffecd4db69c52869",
+      "bytes": 3169
+    },
+    {
+      "path": "tests/test_kristalizer.py",
+      "sha256": "d8c9baaf325e05968edeacec7c9f3e77a2f2e7d1805abc6dcb6d1d6a214769a0",
+      "bytes": 11425
+    }
+  ]
+}

@@ -3,9 +3,9 @@
 import argparse,json,sys,os
 from pathlib import Path
 from kristalizer.core import scan, stage, build, load, import_legacy_decisions
+from kristalizer.kit_reference import resolve_kit
 
 HERE=Path(__file__).resolve().parents[1]
-DEFAULT_KIT=HERE/'vendor/Kristal-Authoring-Kit/tools/kristal.py'
 
 def configure_output_encoding():
     """Use real Unicode for redirected output even on legacy Windows code pages.
@@ -28,10 +28,11 @@ def main():
     p=sub.add_parser('stage',help='Copier les projets et préparer les crosswalks approuvés')
     p.add_argument('--source',required=True);p.add_argument('--output',required=True)
     p=sub.add_parser('build',help='Valider et construire uniquement les copies de staging')
-    p.add_argument('--staging',required=True);p.add_argument('--kit',default=str(DEFAULT_KIT))
+    p.add_argument('--staging',required=True);p.add_argument('--kit',default=None,help='External Kit directory or tools/kristal.py (default: env, config, sibling)')
     p.add_argument('--publish',action='store_true');p.add_argument('--activate',action='store_true')
     p=sub.add_parser('import-decisions',help='Importer ancien 02_DECISIONS.csv sans effacer le nouveau registre')
     p.add_argument('--file',required=True);p.add_argument('--output',required=True)
+    p=sub.add_parser('kit-status',help='Validate and show the single external Authoring Kit reference');p.add_argument('--kit',default=None)
     p=sub.add_parser('status');p.add_argument('--output',required=True)
     args=ap.parse_args()
     try:
@@ -53,6 +54,8 @@ def main():
         elif args.action=='import-decisions':
             obj=import_legacy_decisions(args.file,args.output)
             print('[OK] Décisions historiques :',json.dumps(obj,ensure_ascii=False))
+        elif args.action=='kit-status':
+            print(json.dumps(resolve_kit(args.kit),ensure_ascii=False,indent=2))
         elif args.action=='status':
             root=Path(args.output);paths=[root/'ANALYSE/RAPPORT.json']
             paths.extend(sorted(list((root/'STAGING').glob('*/KRISTALIZER_BUILD_REPORT.json')) + list((root/'STAGING').glob('*/BRIDGE_BUILD_REPORT.json')))[-1:]) if (root/'STAGING').is_dir() else None

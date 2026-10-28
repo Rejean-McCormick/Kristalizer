@@ -15,18 +15,23 @@ DEFAULTS={
   'source':str(DEFAULT_SOURCE),
   'index':r'D:\EncyKlopedia\30_working\wikidata\wikidata.compact.sqlite',
   'output':str(ROOT/'SORTIE'),
-  'kit':str(ROOT/'vendor/Kristal-Authoring-Kit/tools/kristal.py'),
+  'kit':'',
   'staging':''}
 
 class Window:
     def __init__(self):
-        self.root=tk.Tk();self.root.title('Kristalizer 1.2.1');self.root.geometry('1040x710');self.root.minsize(790,580)
+        self.root=tk.Tk();self.root.title('Kristalizer 1.2.2 — external Kit');self.root.geometry('1040x710');self.root.minsize(790,580)
         conf=dict(DEFAULTS)
         conf_file=CFG if CFG.is_file() else LEGACY_CFG
         if conf_file.is_file():
             try:conf.update({k:v for k,v in json.loads(conf_file.read_text(encoding='utf-8')).items() if k in DEFAULTS})
             except (ValueError,OSError):pass
-        if not Path(conf['kit']).is_file():conf['kit']=DEFAULTS['kit']
+        # Retain an explicit Kit selection, even if temporarily unavailable.
+        # Never silently switch back to the old embedded vendor copy.
+        if not conf['kit']:
+            from kristalizer.kit_reference import locate_kit
+            candidate=locate_kit(config=ROOT/'missing-kit-config.json')
+            if candidate.is_file():conf['kit']=str(candidate)
         self.values={k:tk.StringVar(value=conf[k]) for k in DEFAULTS}
         self.busy=False;self.messages=queue.Queue();self.process=None
         self.header();self.inputs();self.actions();self.console()
@@ -42,7 +47,7 @@ class Window:
     def inputs(self):
         frame=ttk.LabelFrame(self.root,text='Configuration',padding=10);frame.pack(fill='x',padx=14,pady=4)
         specs=[('source','Kristal(s) — dossier parent ou projet'),('index','Index Wikidata EncyK (SQLite)'),
-               ('output','Dossier de sortie et décisions'),('kit','Authoring Kit (tools/kristal.py)'),('staging','Copie de staging à construire')]
+               ('output','Dossier de sortie et décisions'),('kit','External Authoring Kit (one canonical tools/kristal.py)'),('staging','Copie de staging à construire')]
         for i,(key,text) in enumerate(specs):
             ttk.Label(frame,text=text).grid(row=i,column=0,sticky='w',pady=4)
             ttk.Entry(frame,textvariable=self.values[key]).grid(row=i,column=1,sticky='ew',padx=8,pady=3)
@@ -63,6 +68,7 @@ class Window:
         ttk.Button(row,text='Ouvrir la sortie',command=lambda:self.openfolder('output')).pack(side='left',padx=4)
         ttk.Button(row,text='Ouvrir le staging',command=lambda:self.openfolder('staging')).pack(side='left',padx=4)
         ttk.Button(row,text='Importer anciennes décisions',command=self.import_old).pack(side='left',padx=4)
+        ttk.Button(row,text='Check Authoring Kit',command=self.check_kit).pack(side='left',padx=4)
         self.savebutton=ttk.Button(row,text='Sauvegarder les chemins',command=self.save);self.savebutton.pack(side='left',padx=4)
         self.stopbutton=ttk.Button(row,text='Arrêter',command=self.cancel,state='disabled');self.stopbutton.pack(side='right',padx=4)
 
@@ -146,8 +152,12 @@ class Window:
             return
         if activate and not messagebox.askyesno('Confirmation','Publier et activer le canal current DANS LES COPIES seulement ?\nLes projets originaux resteront intacts.'):
             return
-        self.submit(['build','--staging',staging,'--kit',self.values['kit'].get()] +
+        kit=self.values['kit'].get().strip()
+        self.submit(['build','--staging',staging] + (['--kit',kit] if kit else []) +
                     (['--publish','--activate'] if activate else []))
+    def check_kit(self):
+        path=self.values['kit'].get().strip()
+        self.submit(['kit-status'] + (['--kit',path] if path else []))
     def cancel(self):
         if self.process is not None:
             self.process.terminate();self.put('Arrêt demandé. Un build en cours peut laisser une copie partielle dans STAGING.\n')
