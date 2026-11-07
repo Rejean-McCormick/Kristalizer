@@ -113,10 +113,17 @@ def v11_assets(project):
         profile=load(p)
         files={key:goodpath(project,profile[key]) for key in ('registry','graph','crosswalk','catalog')}
     else:
-        base=project/'.kristal/v11'
+        # Legacy-authoring exports can carry a complete, non-activated v11
+        # quartet in canonical storage rather than in .kristal/v11.
+        # This is discovery only; stage() copies it and build() asks the Kit
+        # to register/validate the four artifacts on the COPY, not the source.
         names={'registry':'identity-registry.json','graph':'semantic-graph.json',
                'crosswalk':'external-crosswalk.json','catalog':'dictionaries/catalog.json'}
-        files={k:base/v for k,v in names.items()}
+        candidates=[project/'.kristal/v11', project/'canon/v11',
+                    project/'canon/domain/v11']
+        files=next(({k:base/v for k,v in names.items()}
+                    for base in candidates if all((base/v).is_file() for v in names.values())),None)
+        if files is None:return None
     if not all(x.is_file() for x in files.values()):return None
     objs={k:load(v) for k,v in files.items()}
     ns=objs['registry']['namespace_id']
@@ -124,6 +131,46 @@ def v11_assets(project):
         raise ValueError(f'Namespaces v11 incohérents dans {project.name}')
     return {'files':files, 'objects':objs, 'namespace':ns,
             'active_profile':p.is_file(), 'ids':{x['id']:x['kind'] for x in objs['registry']['identities']}}
+
+
+def legacy_v11_preflight(project):
+    """Read-only, hash-bound migration inputs; never assign semantic identities.
+
+    Report only the existing historical payloads, so an authority can decide
+    which KQ/KP/KA/KS roles really exist before any graph conversion.
+    """
+    project=Path(project)
+    sources=[]; seen=set()
+    idx=project/'canon/state.index.json'
+    refs=[]
+    if idx.is_file():
+        try:
+            data=load(idx)
+            refs=[x.get('path') for x in data.get('canonical_artifacts',[])
+                  if isinstance(x,dict) and isinstance(x.get('path'),str)]
+        except (ValueError,TypeError):pass
+    for area in ('canon/domain','canon/epistemic','canon/artifacts'):
+        directory=project/area
+        if directory.is_dir():
+            refs.extend(x.relative_to(project).as_posix() for x in sorted(directory.glob('*.json')))
+    for ref in refs:
+        if ref in seen:continue
+        seen.add(ref)
+        try: file=goodpath(project,ref)
+        except ValueError:continue
+        if not file.is_file() or not file.suffix.lower()=='.json':continue
+        size=file.stat().st_size
+        # No need to parse huge packages to establish provenance.
+        record={'path':ref,'size_bytes':size,'sha256':hashlib.sha256(file.read_bytes()).hexdigest()}
+        if size<=8_000_000:
+            try:
+                doc=load(file)
+                if isinstance(doc,dict) and isinstance(doc.get('assertions'),list):
+                    record['legacy_assertion_count']=len(doc['assertions'])
+            except (ValueError,UnicodeError):pass
+        sources.append(record)
+    return {'read_only':True,'semantic_identity_allocation':'not_performed',
+            'source_artifacts':sources}
 
 
 def labels_from_catalog(project,assets):
@@ -466,7 +513,8 @@ def stage(source,output):
             shutil.copytree(p,copy,symlinks=True)
             assets=v11_assets(copy)
             if assets is None:
-                stats.append({'project':p.name,'status':'MIGRATION_MANUELLE_V11','mappings_new':0});continue
+                stats.append({'project':p.name,'status':'MIGRATION_MANUELLE_V11','mappings_new':0,
+                              'migration_preflight':legacy_v11_preflight(copy)});continue
             obj,n=make_crosswalk(copy,assets,[r for r in dec if r['project']==p.name])
             # Already active: stage a versioned crosswalk only when approvals changed.
             # Complete pre-v11 assets: bootstrap all four registered canonical inputs.

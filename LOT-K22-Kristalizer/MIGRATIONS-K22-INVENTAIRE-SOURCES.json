@@ -1,0 +1,728 @@
+{
+  "format": "kristal.migration-k22.preflight/1.0",
+  "source": "K50.zip snapshots 2026-10-28",
+  "snapshot_only": true,
+  "kristals": [
+    {
+      "kristal": "Kristal-Accounting",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Accounting",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 0,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/canonical_state.payload.json",
+          "sha256": "00742e7297fced2f28fb8f98d708a23968152f8c78accb5d96f6dc5ac3a0c49c",
+          "bytes": 355
+        },
+        {
+          "relative_path": "canon/domain/identity_registry.payload.json",
+          "sha256": "f5584ed5ce7fdd45a3bc8408304699fabce674f84f4c3b066b44d2aa0cba3807",
+          "bytes": 384
+        },
+        {
+          "relative_path": "canon/epistemic/legacy-build-input-editorial-sources.payload.json",
+          "sha256": "2b05309ea3f73f2c547102e374f94e4eecc48fdda5b324c182e5551c9169b3ca",
+          "bytes": 2361
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Botany",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Botany",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 211,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/legacy-v6-state.payload.json",
+          "sha256": "bfaa35259bd85c49179cf1908d00f095e4316f853ea17729688e82f7f62b13a2",
+          "bytes": 308481,
+          "legacy_assertions": 211
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Catho",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Catho",
+      "migration": "V11_CANON_VALIDATED_UNSELECTED",
+      "existing_complete_v11": true,
+      "legacy_assertions_count": 1076,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/legacy-logical-artifact.payload.json",
+          "sha256": "f6ef49d9ef9fd8c39107e651f197b279e4a1f739459eb861b08b6401d25bfcf1",
+          "bytes": 4802704,
+          "legacy_assertions": 1076
+        },
+        {
+          "relative_path": "canon/domain/personnes-reconnaissances.json",
+          "sha256": "2358d00ce88140aa303c4dbe3e9a56e043157d9ca9442675928523d15668ccab",
+          "bytes": 339847
+        },
+        {
+          "relative_path": "canon/domain/wikidata-import.json",
+          "sha256": "89db785f6af427c0f6a5a78d906a0cb068ebaf93134b74a34f378c14058b58a5",
+          "bytes": 21591931
+        },
+        {
+          "relative_path": "canon/domain/wikidata-alignments.json",
+          "sha256": "8824284dc6707eda066fb666cb06347bbad9f8a90f44740c7875e82dc56491be",
+          "bytes": 986587
+        },
+        {
+          "relative_path": "canon/domain/catho-semantic-links.json",
+          "sha256": "b85e401ca27bcd8b7c4252e93b20fb7ae5928755be9b5744130d59887fa2186b",
+          "bytes": 1371468
+        },
+        {
+          "relative_path": "canon/domain/catho-topics.json",
+          "sha256": "d02b34f6b06d276919a6cdf7b2d65687555b1f408fe02e839c02876e5fd281b0",
+          "bytes": 285173
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation.",
+      "v11_source_identity_count": 29844,
+      "v11_source_assertion_count": 15051
+    },
+    {
+      "kristal": "Kristal-Droit-International-Global",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Droit-International-Global",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 72,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/legacy-v6-state.payload.json",
+          "sha256": "2a5223cdcea9b5cccdef4427ed9743d10d1532888cf94c2aaad897071e6df333",
+          "bytes": 143487,
+          "legacy_assertions": 72
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-K-Monetary-System-Socio-Monetary-Transition-Model",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-K-Monetary-System-Socio-Monetary-Transition-Model",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 0,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/system.json",
+          "sha256": "64cad563a8db13ca0219d58a8caab9eba8ed47bb40f74b0b12eb63e7860cb127",
+          "bytes": 4428
+        },
+        {
+          "relative_path": "canon/domain/monetary-constitution.json",
+          "sha256": "e09f03cb93e54d0c41d226a0fadc37233b8bde424abfc64cc339d43473839201",
+          "bytes": 2351
+        },
+        {
+          "relative_path": "canon/domain/transition-statechart.json",
+          "sha256": "be244f712dcd3ee586cd48ba827792d0fdf8122b525a47a04db8873470fcad1b",
+          "bytes": 6234
+        },
+        {
+          "relative_path": "canon/domain/causal-model.json",
+          "sha256": "cfd2150f720da9a2da74999bcce23c3f3a6c13498b6813bb1168750972402741",
+          "bytes": 5147
+        },
+        {
+          "relative_path": "canon/domain/distribution-model.json",
+          "sha256": "5ba03ab1b751beb28b05b57c48cb3dab4f43499f1955cfd78b553dd0d85d59c3",
+          "bytes": 2224
+        },
+        {
+          "relative_path": "canon/domain/event-ledger.json",
+          "sha256": "521399eb65fe1b8958fb11dcbae8e981c69b5aa4a0489340343176d0b13ab205",
+          "bytes": 715
+        },
+        {
+          "relative_path": "canon/operations/smart-vote-policy-interface.json",
+          "sha256": "887bd9a6009f9930d288c4f574247995c27814d957bed14e1cf98adcaf2b4f22",
+          "bytes": 1670
+        },
+        {
+          "relative_path": "canon/operations/monetary-policy.json",
+          "sha256": "e80a6750b5577316d28b98ed96fce1fe58e6de671b96541b32f17f7e42446647",
+          "bytes": 1469
+        },
+        {
+          "relative_path": "canon/operations/payment-settlement.json",
+          "sha256": "6c5fdf11c9bec5ba8ba91636a3bfb0174212040ca72aaea9a432d538a7099e78",
+          "bytes": 1482
+        },
+        {
+          "relative_path": "canon/operations/social-dividend.json",
+          "sha256": "e949da9a1b93c51ebd4921facfd209691ad48d8c9d96823e48c089aaa3d61d06",
+          "bytes": 1344
+        },
+        {
+          "relative_path": "canon/operations/debt-transition.json",
+          "sha256": "ced93ddd8ed134ea606c13da5b759a32fe487b69b39fb1dc112e83119ee13e8c",
+          "bytes": 1969
+        },
+        {
+          "relative_path": "canon/operations/simulation-model.json",
+          "sha256": "0e35cf8fe02b1dbaaaaecb92a681b7d1ed37cad5c60923c0428cc07d44a0bbfa",
+          "bytes": 2387
+        },
+        {
+          "relative_path": "canon/epistemic/assumptions.json",
+          "sha256": "c2bd14ff95e252dc9fe3d9a80c998ebd1ae086de1e33ea975ee24efdc91f559f",
+          "bytes": 1404
+        },
+        {
+          "relative_path": "canon/epistemic/hypotheses.json",
+          "sha256": "e64e9e1e910e04155d08f3f1ebde8a68d9e750c047d5938d7416f2c647d2e6e1",
+          "bytes": 2271
+        },
+        {
+          "relative_path": "canon/epistemic/counterarguments.json",
+          "sha256": "f8924cca897bc0de40eabc128243fa4d88097d6155aa0018ffaf43d1ab8ec951",
+          "bytes": 2282
+        },
+        {
+          "relative_path": "canon/epistemic/evidence-register.json",
+          "sha256": "4658c2d4c7c92922a79f6faa798d54a2ae8ad20eb6dd658b4b59651af1c0ad41",
+          "bytes": 2248
+        },
+        {
+          "relative_path": "canon/epistemic/validation-state.json",
+          "sha256": "754832e3085e174e1d9ee0510e5caf95c584e35936aaa9dd84733083d43637c6",
+          "bytes": 1328
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-King-Klown-4-2-0-MEDIA",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-King-Klown-4-2-0-MEDIA",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 0,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/artifacts/aliases.logical-artifact.json",
+          "sha256": "8b45d73e0a844ceab0249825252770e2d50e9c39c0370820b662ae995b627161",
+          "bytes": 16797
+        },
+        {
+          "relative_path": "canon/artifacts/contradictions.logical-artifact.json",
+          "sha256": "a335b3029354b8261387599e0e4de50a987ff843908ac320983619ecdb295bd8",
+          "bytes": 1930
+        },
+        {
+          "relative_path": "canon/artifacts/creator-clarifications.logical-artifact.json",
+          "sha256": "65944f3c9dc1470afb3a740e456eaf2f7fed815f0e4865ef35218bfe976d22f7",
+          "bytes": 1724
+        },
+        {
+          "relative_path": "canon/artifacts/entities.logical-artifact.json",
+          "sha256": "02fbed2233936981c1c0a9789dc060dbc531953d2ebfe713a9ca7a0053f003e8",
+          "bytes": 2123
+        },
+        {
+          "relative_path": "canon/artifacts/core.logical-artifact.json",
+          "sha256": "deaacb0da1b05a36e14541af5a06cc75e95747e628b595bf0b7e0ac8a3939f7d",
+          "bytes": 193577
+        },
+        {
+          "relative_path": "canon/artifacts/media.logical-artifact.json",
+          "sha256": "449d13ca219573ad6b6a897fedf582597ccef5d11b26f65e5f194a01d96fca68",
+          "bytes": 122192
+        },
+        {
+          "relative_path": "canon/artifacts/reader-policy.logical-artifact.json",
+          "sha256": "01f143bdcf8afc0427f54d0bdeff8e5acc6bb47def99ba787734270296e55182",
+          "bytes": 2027
+        },
+        {
+          "relative_path": "canon/artifacts/events.logical-artifact.json",
+          "sha256": "722acd755bd6fe4835e1da2f9d77b7045ce1e95260625c7c430603b953ae4767",
+          "bytes": 51128
+        },
+        {
+          "relative_path": "canon/artifacts/works.logical-artifact.json",
+          "sha256": "4b68503955f2e8a28152647d5783af1ae7697c39a8e2c01185ae4b5850328a25",
+          "bytes": 6652
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-kOA-Ecosystem",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-kOA-Ecosystem",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 8992,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "knowledge-base/corpus/koa-ecosystem.kristal-state.json",
+          "sha256": "68d4531fc9d92f4d97c2afeb063699e49271976a517fbae73192818daa2716b6",
+          "bytes": 6145864,
+          "legacy_assertions": 8992
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-kOA-Koali-Sales-Pitch",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-kOA-Koali-Sales-Pitch",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 142,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/sales-pitch.kristal-state.json",
+          "sha256": "1d90c23af770b205da0ee04032040ed6b1b62966a2cecf490997a66fd33d3478",
+          "bytes": 630746,
+          "legacy_assertions": 142
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Pi-Theory-Prime-Bridge-Spiral-Mirror-Equivariance-Invariant-Regime-Key",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Pi-Theory-Prime-Bridge-Spiral-Mirror-Equivariance-Invariant-Regime-Key",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 0,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/prime-signature.json",
+          "sha256": "5e6e697b5bda38e808a8792273ee9d3ea7aeb90c58234c15449f22c3092b9a81",
+          "bytes": 7190
+        },
+        {
+          "relative_path": "canon/domain/external-math-kernel.json",
+          "sha256": "9ad685835620a0eafb3e27569373a3f7a33a594614abb5f6b35c3c7d25060081",
+          "bytes": 5501
+        },
+        {
+          "relative_path": "canon/domain/bridge-model.json",
+          "sha256": "e1e26419dc918fbd7599f271eb87b3cbb056fe76c8899e1d5434c2cfc0227cd0",
+          "bytes": 19159
+        },
+        {
+          "relative_path": "canon/domain/research-program.json",
+          "sha256": "55361db971dae230ae83d15874733ace27f1c2883800de5cb528784cbbb30a40",
+          "bytes": 11213
+        },
+        {
+          "relative_path": "canon/epistemic/claim-ledger.json",
+          "sha256": "f0a652ef8fa71d73245681885e10e6457c115b8e16d89b3b6a38ad6d9f6f4b8b",
+          "bytes": 30683
+        },
+        {
+          "relative_path": "canon/operations/verify_prime_bridge.py",
+          "sha256": "317378107d4b9a84b4ef0dba9009f8e7a69c14c54d9a400fadae50b5c5e656d5",
+          "bytes": 1566
+        },
+        {
+          "relative_path": "canon/domain/null-models.json",
+          "sha256": "723ae21ea8e4e2089bb44cd4c501c99a4971d11c28e6b19cdb1d105601d082c5",
+          "bytes": 2523
+        },
+        {
+          "relative_path": "canon/epistemic/validation-ladder.json",
+          "sha256": "760362d2c9b50d64194392f23142a892643b291753bbd5c2e47fcbdd5870076a",
+          "bytes": 1879
+        },
+        {
+          "relative_path": "canon/epistemic/relation-types.json",
+          "sha256": "d43bfdf68e539c57e5ad87f1297031fae6491fd1545e1535b3594584c65d5c95",
+          "bytes": 3788
+        },
+        {
+          "relative_path": "canon/operations/score_prime_signature.py",
+          "sha256": "8a2b17326d9e8d98c20dca7931f89462e5d098d1103e1729b4f705ecf2160c21",
+          "bytes": 2814
+        },
+        {
+          "relative_path": "canon/domain/preregistration.json",
+          "sha256": "0ab1bdb87beaa3d12974baa0cc4a4b6566479f56531403c75e9dbb426e7be3a2",
+          "bytes": 2035
+        },
+        {
+          "relative_path": "canon/domain/invariant-regime-key.json",
+          "sha256": "6bb5ba5f152ff0e5ca5005c2c3e299ed438e74e0c51db2390e925a60ee54deff",
+          "bytes": 20501
+        },
+        {
+          "relative_path": "canon/domain/regime-map.json",
+          "sha256": "7cedea29ddb0b6d715012a601ae3c298e1664f7847f42c5fdfb0bcd644ef9065",
+          "bytes": 1858
+        },
+        {
+          "relative_path": "canon/domain/transfer-program.json",
+          "sha256": "5a4b36a41e5dda9a8beeda56b9dc18ab552633df2a00934ab3648ee2b38cba5f",
+          "bytes": 6725
+        },
+        {
+          "relative_path": "canon/operations/verify_invariant_key.py",
+          "sha256": "24fb6d6d6afba39fed0536f320dde7e0a43b37385cb601b6281c671b73d237a7",
+          "bytes": 2337
+        },
+        {
+          "relative_path": "canon/domain/cross-domain-alignment.json",
+          "sha256": "1bb38dd7b2c820712424ff055747f5af2bcb8d9b9808cd3bfb90abf3690b8b2b",
+          "bytes": 18311
+        },
+        {
+          "relative_path": "canon/domain/invariant-descent.json",
+          "sha256": "d68069c1adb844d4e0394d2bc5915a3cd4e2da0cf9ba9515a09f199824913568",
+          "bytes": 2633
+        },
+        {
+          "relative_path": "canon/domain/reaction-lab.json",
+          "sha256": "7f817d3f565ec8a2ec8fd12a3a79e0a4185498ac81cb92d7371b9041b418d416",
+          "bytes": 4991
+        },
+        {
+          "relative_path": "canon/operations/descent.py",
+          "sha256": "cbec63f654f4e0f6140f434ee1a27c4423b05537757379cb2d0ae7982718734b",
+          "bytes": 2980
+        },
+        {
+          "relative_path": "canon/operations/verify_descent.py",
+          "sha256": "e07ce5f3a859067332ca71498218744a348424c8e26a8320086410505ef1fc31",
+          "bytes": 1830
+        },
+        {
+          "relative_path": "canon/domain/transition-selection.json",
+          "sha256": "c0a9893afe97269a201fc8f8d229ec7c95ab4c28df730409487ffd95d423700b",
+          "bytes": 5110
+        },
+        {
+          "relative_path": "canon/operations/transition_selection.py",
+          "sha256": "65fc038cb9b593cb7800a314f05ad306388b985f5fa3c4c90d02bfb8dafbce07",
+          "bytes": 2672
+        },
+        {
+          "relative_path": "canon/operations/verify_transition_selection.py",
+          "sha256": "c4989157616499a0c0273a47d00f9c27dd588d48714e55d2c7593ae22e252e55",
+          "bytes": 1482
+        },
+        {
+          "relative_path": "canon/domain/spiral-return-model.json",
+          "sha256": "b1305d9b1b3cecf69d333c553715c9e7a9cd2027efbc456efa70f9103bb6cf75",
+          "bytes": 6496
+        },
+        {
+          "relative_path": "canon/operations/verify_spiral_return.py",
+          "sha256": "707fcc5344e6f5ffae03f5cd0b166674a16c1803191b018fc788b2942611db60",
+          "bytes": 1123
+        },
+        {
+          "relative_path": "canon/domain/efimov-rg-limit-cycle.json",
+          "sha256": "705bd199fe99575cad96b6237a839315a909b8c62b3bb65b6d5ee69818a1fa94",
+          "bytes": 5123
+        },
+        {
+          "relative_path": "canon/operations/verify_efimov_rg.py",
+          "sha256": "2ce64d234703b810d3ccb38de0b67865c2d64c10a4dd4dc7d5fa085c18e86d3a",
+          "bytes": 1045
+        },
+        {
+          "relative_path": "canon/domain/mirror-parallel-branch.json",
+          "sha256": "66aa083e3c047e5de8c0eacbe774455b9d24c54d0d9da37a1cd1b3dffe76a0f6",
+          "bytes": 4552
+        },
+        {
+          "relative_path": "canon/operations/verify_mirror_branch.py",
+          "sha256": "9af42e2e89f98264a7e57c1c3f8e3fc547c350b528a2d1d2dc6352abcdedac74",
+          "bytes": 717
+        },
+        {
+          "relative_path": "canon/domain/mirror-equivariance.json",
+          "sha256": "a6aff358be795a4a23dead71831bbfd0a6a78984bc32130c8bdd8035b74eca31",
+          "bytes": 8092
+        },
+        {
+          "relative_path": "canon/operations/verify_mirror_equivariance.py",
+          "sha256": "3297ffc4bbfd1b161bdcc2d89a29a66d7ee0e44aa43fc997488bc902db6167a1",
+          "bytes": 1848
+        },
+        {
+          "relative_path": "canon/domain/core-resilience-return.json",
+          "sha256": "cb52e2959ac79bd804e0fbb8d66693afad73666177bd8e86000d503146af8937",
+          "bytes": 9129
+        },
+        {
+          "relative_path": "canon/operations/verify_core_resilience.py",
+          "sha256": "cbfea4e299d5b2dd3c44f66b2e9e5614e35c8e7795da0e0bce192c70543286bf",
+          "bytes": 1382
+        },
+        {
+          "relative_path": "canon/domain/origin-stabilization-metaorganization.json",
+          "sha256": "5a07c7fbe21eaffe5da2cf178a5459ef98c381fac43c995b66c6f14d1cc343aa",
+          "bytes": 8410
+        },
+        {
+          "relative_path": "canon/domain/alpha-omega-coherence-agents.json",
+          "sha256": "529a0d2aedc06f8c3820123fcb25a02b9f9b556bd48debb1728a0a4ef8d9162e",
+          "bytes": 10622
+        },
+        {
+          "relative_path": "canon/epistemic/research-claims-2026-10-08.json",
+          "sha256": "c10c807c08400b38dd131ff2851cf693779e293336af870d2e3d70f9d740c0c6",
+          "bytes": 13696
+        },
+        {
+          "relative_path": "canon/epistemic/research-relations-2026-10-08.json",
+          "sha256": "c985019c56b38810e570e420125e06e810edffd1e675a1a95c7bc97d625dfd25",
+          "bytes": 4443
+        },
+        {
+          "relative_path": "canon/epistemic/research-concept-ownership-2026-10-08.json",
+          "sha256": "f4bff4992caf772889859063becc81d7d410ca6b2dd4f78c1a62eec94e7a03ed",
+          "bytes": 5400
+        },
+        {
+          "relative_path": "canon/epistemic/scientific-literature-2026-10-08.json",
+          "sha256": "7902e49deb79e0c693e470914683e7e15d790be5c47e68518fd961e6433f9637",
+          "bytes": 16758
+        },
+        {
+          "relative_path": "canon/epistemic/scientific-literature-links-2026-10-08.json",
+          "sha256": "e28c3907b37ac88de7bbe8a5e4852b1c8cf2479b61f03a82d607a3030feabd27",
+          "bytes": 13426
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-PiTheory",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-PiTheory",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 0,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/logical/resource-basis.logical-artifact.json",
+          "sha256": "4f43cfe960ee030dc691ab927bf2aa0004ec9c84e825094534d9b6e8b72807c5",
+          "bytes": 3598
+        },
+        {
+          "relative_path": "canon/logical/domain-state.logical-artifact.json",
+          "sha256": "69a1b22a358e9e1e5a7e0ee0f6b755e17cf2af76e5c4f04f0f4c7bc627fb1b61",
+          "bytes": 2303
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-PoliceOps",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-PoliceOps",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 538,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "knowledge-base/corpus/policeops.structured-epistemic-state.json",
+          "sha256": "82dd16117faf516961d06a02e1c3e48fc863fc97135363bb381aa5cad5591494",
+          "bytes": 2833306,
+          "legacy_assertions": 538
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Pouvoirs-Australie",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Pouvoirs-Australie",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 106,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/jurisdictional-power.payload.json",
+          "sha256": "ae7bec58dade25a89a9bf283694984a8cdb2bac12eeb557c08b2b5c091c73397",
+          "bytes": 175323,
+          "legacy_assertions": 106
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Pouvoirs-Canada-Quebec",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Pouvoirs-Canada-Quebec",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 77,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/jurisdictional-power.payload.json",
+          "sha256": "be464d93796c8959f9f84acf1b536227b8eef4f0c19b78c4183496b7f254e3a5",
+          "bytes": 130598,
+          "legacy_assertions": 77
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Pouvoirs-Coree-du-Sud",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Pouvoirs-Coree-du-Sud",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 86,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/jurisdictional-power.payload.json",
+          "sha256": "8d87e6274a6e1a5499ce5d6959f32fded6d73c00113e22301ceec7291ba8528b",
+          "bytes": 145848,
+          "legacy_assertions": 86
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Pouvoirs-Finlande",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Pouvoirs-Finlande",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 118,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/jurisdictional-power.payload.json",
+          "sha256": "392edb5f2825bf4689513592f5c12bf08a46fe7541bdbcc475954c5bc03d4772",
+          "bytes": 190446,
+          "legacy_assertions": 118
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Pouvoirs-France",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Pouvoirs-France",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 89,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/jurisdictional-power.payload.json",
+          "sha256": "7984882fe989f5f25410190d1b746d2cfed43424f6d684ff6e8798634bb83aba",
+          "bytes": 148683,
+          "legacy_assertions": 89
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Pouvoirs-Japon",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Pouvoirs-Japon",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 89,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/jurisdictional-power.payload.json",
+          "sha256": "b95039f817aebc783685d7edd3d68aa0c622f83b71f87b250cbeaf70cacec005",
+          "bytes": 147240,
+          "legacy_assertions": 89
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Pouvoirs-Pays-Bas",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Pouvoirs-Pays-Bas",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 116,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/jurisdictional-power.payload.json",
+          "sha256": "c6dd97ce280dac974954fc748f5274e86a7d24c2cafd622f731a1c30a5a9bacf",
+          "bytes": 190259,
+          "legacy_assertions": 116
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-Power-Topologie-du-pouvoir-Power-Dynamics",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-Power-Topologie-du-pouvoir-Power-Dynamics",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 0,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "knowledge-base/corpus/power-topology.structured-epistemic-state.json",
+          "sha256": "91573ba1f265a43a06d0661bfb9d491f3e3aa40e946ab31481f736b8d0f82404",
+          "bytes": 34350571
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-prime-numbers",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-prime-numbers",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 0,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/v9-logical-payload.json",
+          "sha256": "041c52d32af2ffacb2f1b03610aeb7dfe08a59572569385932dd4bda67a74827",
+          "bytes": 38011
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-ScolQc-Education-Quebec",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-ScolQc-Education-Quebec",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 0,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/artifacts/authoring-basis.logical-artifact.json",
+          "sha256": "0f233450b8ab1a0ddfb4bccd555e5913c550ba71639cf7890823af225d15688e",
+          "bytes": 9340
+        },
+        {
+          "relative_path": "canon/artifacts/contract-basis.logical-artifact.json",
+          "sha256": "f8bc3906496f89113a3896b72461e25ac4aab6552c2996c2a81edd359b494d5d",
+          "bytes": 16583
+        },
+        {
+          "relative_path": "canon/artifacts/canonical-state.logical-artifact.json",
+          "sha256": "7eff1b7d60b65b22a3a44f5ceedc4b445b6ac12794fffaf131ed02ad7e634ac0",
+          "bytes": 2116
+        },
+        {
+          "relative_path": "canon/artifacts/domain-state.logical-artifact.json",
+          "sha256": "60b17a4d1b012c72a07771771cb8c77a6a10389b8af6806e1f55ca71018107bd",
+          "bytes": 4359
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    },
+    {
+      "kristal": "Kristal-VehiculeDiag",
+      "windows_full_path": "C:\\mycode\\Kristal\\locals\\Kristal-VehiculeDiag",
+      "migration": "MIGRATION_MANUELLE_V11",
+      "existing_complete_v11": false,
+      "legacy_assertions_count": 833,
+      "canonical_source_artifacts": [
+        {
+          "relative_path": "canon/domain/reference-model.json",
+          "sha256": "32a438d150af1460f256804fcd631ad198ba300f9c34e9e64ddbac44fa9c0290",
+          "bytes": 423933
+        },
+        {
+          "relative_path": "canon/epistemic/epistemic-overlay.json",
+          "sha256": "1d699d72577b3335046a65e75143d5c5d13c4e3a1c82e7a9b38bbbc1a0d62c84",
+          "bytes": 3668898,
+          "legacy_assertions": 833
+        }
+      ],
+      "note": "No new KQ/KP/KA/KS identities were minted. No source mutation."
+    }
+  ]
+}
