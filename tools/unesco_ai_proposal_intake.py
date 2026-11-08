@@ -59,6 +59,10 @@ def accept(dossier:dict,proposals:dict,*,dossier_sha256:str):
                 if not match or match[0].get('text_sha256')!=e.get('sha256'):
                     raise ProposalError('Wikimedia article text digest/page ID does not match dossier')
                 source=match[0]
+                excerpt=source.get('context_excerpt_unverified')
+                if (source.get('mediawiki_redirect') is True or
+                    (isinstance(excerpt,str) and re.match(r'^\ufeff?\s*#\s*redirect\b\s*:?\s*\[\[',excerpt,re.I))):
+                    raise ProposalError('MediaWiki redirect cannot support an AI factual proposal')
                 if (source.get('ai_context_eligible') is not True or
                     source.get('source_integrity_status')!='CANDIDATE_MATCHED' or
                     source.get('title_agrees') is not True or
