@@ -51,7 +51,7 @@ def locate_kit(explicit=None, *, root=None, environ=None, config=None):
     return root.parent / KIT_DIRNAME / "tools" / "kristal.py"
 
 
-def inspect_kit(reference):
+def inspect_kit(reference, *, framework=None):
     """Read-only safety / contract preflight. Reevaluate at each build."""
     script = _script(reference)
     if script.name != "kristal.py" or script.parent.name != "tools":
@@ -73,12 +73,40 @@ def inspect_kit(reference):
     if not match:
         raise ValueError(f"Unrecognized Kit version {version!r}; review compatibility before using it")
     major, minor, patch = map(int, match.groups()[:3]); draft = match.group(4)
-    if major != 4 or (minor, patch, int(draft) if draft is not None else 10**6) < (0, 0, 4):
-        raise ValueError(f"Kit {version} not qualified for this integration (requires 4.0.0-draft.4 or compatible 4.x)")
+    # Only the exact v4 draft.4 producer / consumer pair has been checked here.
+    # A later version requires an explicit compatibility matrix and new fixtures,
+    # not a semver shortcut that authorizes unknown changes.
+    if version != "4.0.0-draft.4":
+        raise ValueError(f"Kit {version} not qualified for this integration (requires pinned 4.0.0-draft.4)")
     pin = json.loads(pin_file.read_text(encoding="utf-8-sig"))
     fw_version = pin.get("version", "")
-    if not isinstance(fw_version, str) or not (fw_version == "11.0.0" or fw_version.startswith("11.0.0-draft.")):
-        raise ValueError(f"Unsupported Framework contract pin {fw_version!r}; verify compatibility before building")
+    if (pin.get("profile") != "kristal-integration-framework-pin/v11.0-draft.4"
+            or fw_version != "11.0.0-draft.4"):
+        raise ValueError(f"Unsupported Framework contract pin {fw_version!r}; exact draft.4 profile required")
+    pinned = pin.get("files")
+    required = {"VERSION", "schemas/v11/kristal-identity-registry.schema.json",
+                "schemas/v11/kristal-semantic-graph.schema.json",
+                "schemas/v11/kristal-external-crosswalk.schema.json",
+                "schemas/v11/kristal-dictionary-catalog.schema.json",
+                "tools/v11/validate_v11.py", "tools/v11/interop_preflight.py"}
+    if (not isinstance(pinned, dict) or not required.issubset(pinned)
+            or len(pinned) != 13):
+        raise ValueError("Incomplete pinned Framework source inventory")
+    for name, value in pinned.items():
+        rel = Path(name)
+        if rel.is_absolute() or ".." in rel.parts or "\\" in name or not re.fullmatch(r"[a-f0-9]{64}", str(value)):
+            raise ValueError("Unsafe or incomplete Framework pin entry: " + str(name))
+    framework_verified = False
+    if framework is not None:
+        fw = Path(framework).expanduser().resolve()
+        vfile = fw / "VERSION"
+        if not vfile.is_file() or vfile.read_text(encoding="utf-8").strip() != fw_version:
+            raise ValueError("Framework source does not match pinned version")
+        for name, digest in pinned.items():
+            source = (fw / name).resolve()
+            if not source.is_relative_to(fw) or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != digest:
+                raise ValueError("Framework source pin drift: " + name)
+        framework_verified = True
     src = script.read_text(encoding="utf-8-sig")
     code_version = re.search(r"^KIT_VERSION\s*=\s*['\"]([^'\"]+)['\"]",src,re.M)
     if not code_version or code_version.group(1) != version:
@@ -101,9 +129,17 @@ def inspect_kit(reference):
                     (("script", script), ("version", version_file), ("pin", pin_file))}
     return {"script": str(script), "root": str(kit_root), "version": version,
             "framework_pin": fw_version, "source": "external-canonical", "bundled": False,
+            "framework_source_checked": framework_verified,
+            "scope": "local contract preflight; not cross-product qualification, release authorization or deployment",
             "fingerprints_sha256": fingerprints}
 
 
-def resolve_kit(explicit=None):
-    """Resolve one usable external Kit; never fall back to bundled/legacy Kit."""
-    return inspect_kit(locate_kit(explicit))
+def resolve_kit(explicit=None, *, framework=None):
+    """Resolve one usable external Kit; optional exact Framework source validation.
+
+    An explicitly set `KRISTAL_FRAMEWORK_ROOT` also requests source checking
+    before a build. No network discovery or implicit pin promotion is performed.
+    """
+    if framework is None:
+        framework = os.environ.get("KRISTAL_FRAMEWORK_ROOT") or None
+    return inspect_kit(locate_kit(explicit), framework=framework)

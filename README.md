@@ -82,3 +82,7 @@ Tests: `py -3 -m unittest discover -s tests -v`. GUI: `Kristalizer.pyw`. English
 `kristalizer/`: engine and CLI; `Kristalizer.pyw`: Tkinter GUI; `kristalizer/kit_reference.py`: external dependency resolver; `tests/`: regression tests; `NOTES_TECHNIQUES.md`: architecture.
 
 This repository contains no keys, local configuration, large extraction results, or Wikidata dumps. The local `kristalizer-config.json` configuration is ignored by Git.
+
+## Branch 02 final-system alignment (2026-11-09)
+
+See [the English functional handoff and qualification limits](BRANCH02_FINAL_SYSTEM_HANDOFF.md). This is an additive, owner-scoped alignment; no canonical state, public release or production deployment is implied.

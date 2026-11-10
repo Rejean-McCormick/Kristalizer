@@ -32,7 +32,7 @@ def main():
     p.add_argument('--publish',action='store_true');p.add_argument('--activate',action='store_true')
     p=sub.add_parser('import-decisions',help='Importer ancien 02_DECISIONS.csv sans effacer le nouveau registre')
     p.add_argument('--file',required=True);p.add_argument('--output',required=True)
-    p=sub.add_parser('kit-status',help='Validate and show the single external Authoring Kit reference');p.add_argument('--kit',default=None)
+    p=sub.add_parser('kit-status',help='Validate and show the single external Authoring Kit reference');p.add_argument('--kit',default=None);p.add_argument('--framework',default=None,help='Optional exact local Framework draft.4 checkout for 13 SHA-256 source checks')
     p=sub.add_parser('status');p.add_argument('--output',required=True)
     args=ap.parse_args()
     try:
@@ -55,7 +55,7 @@ def main():
             obj=import_legacy_decisions(args.file,args.output)
             print('[OK] Décisions historiques :',json.dumps(obj,ensure_ascii=False))
         elif args.action=='kit-status':
-            print(json.dumps(resolve_kit(args.kit),ensure_ascii=False,indent=2))
+            print(json.dumps(resolve_kit(args.kit,framework=args.framework),ensure_ascii=False,indent=2))
         elif args.action=='status':
             root=Path(args.output);paths=[root/'ANALYSE/RAPPORT.json']
             paths.extend(sorted(list((root/'STAGING').glob('*/KRISTALIZER_BUILD_REPORT.json')) + list((root/'STAGING').glob('*/BRIDGE_BUILD_REPORT.json')))[-1:]) if (root/'STAGING').is_dir() else None
