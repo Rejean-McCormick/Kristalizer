@@ -1,0 +1,21 @@
+{
+  "schema": "koa.daat-owner-observation/0.1.0-local",
+  "subject": "DaAT 0.4.3 local review-handoff (not an owner-adopted profile)",
+  "repository": "Kristalizer",
+  "role": "kristalizer",
+  "authority": "mapping proposals and local read-only staging",
+  "evidence_status": "OBSERVED_SNAPSHOT",
+  "markers": [
+    "VERSION",
+    "kristalizer/core.py",
+    "kristalizer/kit_reference.py",
+    "EXTERNAL_AUTHORING_KIT.md"
+  ],
+  "read_only": true,
+  "prototype_consumer_adopted": false,
+  "ik_ingress_approved": false,
+  "canonical_write_authorized": false,
+  "publication_authorized": false,
+  "boundary": "Reviewed DaAT candidates are proposals only; lexical similarity and local staging may not create semantic KQ/KP/KA/KS authority or invoke Kit publication.",
+  "acceptance_gate": "Kristalizer owner supplies a testable typed mapping for DaAT candidate IDs with exact source references and negative cases."
+}
