@@ -76,8 +76,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "3d98a1fea4e0c619d194316cb8a45042d9e29d60f856cf2eab45f04f261366c3",
-      "bytes": 6594
+      "sha256": "326b03b35f816fe39b1d5e015853e96247647afd46f119de8e66da0d63cdb3c9",
+      "bytes": 6859
     },
     {
       "path": "SOURCE_PROVENANCE_EN.md",
@@ -106,18 +106,18 @@
     },
     {
       "path": "kristalizer/cli.py",
-      "sha256": "4f84ea5caab21c14a16ab379de72e3edcc8c05d87e5793072c8b403bf7b2537f",
-      "bytes": 4687
+      "sha256": "cc1faeb2eb7a3a4114f238b8306e785a5c6fe56068b7b51b45a9c239c1885bd9",
+      "bytes": 4839
     },
     {
       "path": "kristalizer/core.py",
-      "sha256": "b438935f7385e6c430ea3dfc4dea6a93274f2a39193f3d90f208500a90da0b12",
-      "bytes": 39991
+      "sha256": "d488916df305885521a64fc5c70d06cd63165876dcdd5b375872861b37af4e8f",
+      "bytes": 42319
     },
     {
       "path": "kristalizer/kit_reference.py",
-      "sha256": "2e1dbc47e97a969196f7def8efb58972ad8ea0757d650d5931a387c028a436b5",
-      "bytes": 5852
+      "sha256": "39eaf63748ed539e63620b4c1600530c2d0df7db1ad97407dcc465036892597e",
+      "bytes": 7994
     },
     {
       "path": "kristalizer/topic_index.py",
