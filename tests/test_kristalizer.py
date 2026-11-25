@@ -12,7 +12,7 @@ def write(path,obj):
 class KristalizerTests(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
-        self.root=Path(self.tmp.name);self.src=self.root/'input';self.proj=self.src/'Kristal-Futur'
+        self.root=Path(self.tmp.name).resolve();self.src=self.root/'input';self.proj=self.src/'Kristal-Futur'
         self.proj.mkdir(parents=True)
         write(self.proj/'kristal.workspace.json',{'slug':'futur'})
         reg={'artifact_type':'kristal_identity_registry','schema_version':'11.0','namespace_id':'urn:kristal:futur',

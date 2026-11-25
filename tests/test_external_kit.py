@@ -11,7 +11,7 @@ class CanonicalKitReferenceTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name)/"Kristalizer"
+        self.root = Path(self.tmp.name).resolve()/"Kristalizer"
         self.root.mkdir()
         self.sibling = self.root.parent/"Kristal-Authoring-Kit"
         self.sibling.joinpath('tools').mkdir(parents=True)
